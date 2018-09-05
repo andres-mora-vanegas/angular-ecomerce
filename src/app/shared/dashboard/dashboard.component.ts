@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
         product: this.productSelected,
         quantity: this.productQuantity,
         category: this.categoryId
-      }
+      };
       this.arrSaleDto.push(obj);
       this.clearSelected();
     } catch (error) {
