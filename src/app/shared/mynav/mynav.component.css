@@ -10,3 +10,16 @@
   position: sticky;
   top: 0;
 }
+
+.container{
+  width: 80%;
+  margin: auto;
+  display: block;
+}
+
+
+@media (max-width:767px) {
+  .container{
+    width: 95%;    
+  }
+}

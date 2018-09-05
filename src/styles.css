@@ -1,4 +1,79 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* **************
+estilos para tabla responsive
+*****************/
+
+/*  By default, the mobile label shouldn't show */
+
+.mobile-label {
+    display: none;
+}
+
+.mat-row:nth-child(odd), .mat-header-row {
+    background-color: #ECEFF1;
+}
+
+.mat-header-cell {
+    font-weight: bold;
+    color: black !important;
+}
+
+.mat-row:nth-child(even) {
+    background-color: white;
+}
+
+.rightInfo ul {
+    margin: 0;
+}
+
+button.mat-sort-header-button {
+    margin: auto !important;
+}
+
+.mat-row, .mat-sort-header-container {
+    text-align: center;
+}
+
+@media(max-width: 600px) {
+    /* // Custom header label that shows in each column, with a set width and bold font */
+    .mobile-label {
+        width: 50%;
+        display: inline-block;
+        font-weight: bold;
+    }
+    /* // Remove the header row altogether */
+    .mat-header-row {
+        display: none !important;
+    }
+    /* // The row cells should display as a column, justified left, with a bit of extra padding */
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 0px !important;
+    }
+    .mat-row::after {
+        display: none !important;
+    }
+    .mat-cell {
+        width: 100%;
+        padding: 5px 10px;
+    }
+    .rightInfo {
+        float: right;
+        width: 50%;
+    }
+    .mat-row, .mat-sort-header-container {
+        text-align: left;
+    }
+}
