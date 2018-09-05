@@ -14,6 +14,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { MaterialModule } from "./material/material.module";
 import { AppService } from "./app.service";
 import { AvaibilityPipe } from './pipes/avaibility.pipe';
+import { ProductCategoryComponent } from './core/product/product-category/product-category.component';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { AvaibilityPipe } from './pipes/avaibility.pipe';
     ProductListComponent,
     ProductComponent,
     HomeComponent,
-    AvaibilityPipe
+    AvaibilityPipe,
+    ProductCategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { AvaibilityPipe } from './pipes/avaibility.pipe';
     LayoutModule,
     RoutingModule,
     HttpClientModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ],
   providers: [
     AppService

@@ -11,7 +11,7 @@ const appRoutes: Routes = [
   { path: "admin/", component: DashboardComponent },
   { path: "product/:id", component: ProductComponent },
   { path: "product-list", component: ProductListComponent },  
-  { path: "cart", component: ProductListComponent },  
+  { path: "cart", component: DashboardComponent },  
   { path: "**", component: HomeComponent }
 ];
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { AppService } from "../../../app.service";
 import { ProductModel } from "../product.model";
@@ -12,6 +12,10 @@ export class ProductListComponent implements OnInit {
   displayedColumns = ["col2", "col3", "col4", "col5", "col6"];
   dataSource: MatTableDataSource<any>;
 
+  @Input()
+  subLevelId: number;
+  @Input()
+  categoryId: number;
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   @ViewChild(MatSort)
@@ -39,15 +43,23 @@ export class ProductListComponent implements OnInit {
       if (data.products.length > 0) {
         const arrayData = [];
         data.products.forEach((element: ProductModel) => {
+          let element_ = element;
+          if (this.subLevelId != null && this.categoryId != null) {
+            if (this.subLevelId != element_.sublevel_id) {
+              element_ = new ProductModel();
+            }
+          }
           const arrayItem = {
-            col1: element.id,
-            col2: element.name,
-            col3: element.quantity,
-            col4: element.price,
-            col5: element.sublevel_id,
-            col6: element.available
+            col1: element_.id,
+            col2: element_.name,
+            col3: element_.quantity,
+            col4: element_.price,
+            col5: element_.sublevel_id,
+            col6: element_.available
           };
-          arrayData.push(arrayItem);
+          if (arrayItem.col1 != null && arrayItem.col5 != null) {
+            arrayData.push(arrayItem);
+          }
         });
         this.dataSource = new MatTableDataSource(arrayData);
         setTimeout(() => {
