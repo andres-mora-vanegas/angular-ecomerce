@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, Input } from "@angular/core";
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { AppService } from "../../../app.service";
 import { ProductModel } from "../product.model";
+
 
 @Component({
   selector: "app-product-list",
@@ -16,12 +17,14 @@ export class ProductListComponent implements OnInit {
   subLevelId: number;
   @Input()
   categoryId: number;
+  @Output()
+  productDTO = new EventEmitter<any>();
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   @ViewChild(MatSort)
   sort: MatSort;
 
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
     // Assign the data to the data source for the table to render
@@ -84,5 +87,27 @@ export class ProductListComponent implements OnInit {
         this.converDataToDataTable(r);
       })
       .catch(this.appService.doCatch);
+  }
+
+  /**
+   * método que se encarga de manejar las peticiones cuando se escoge un producto
+   */
+  chooseProduct(element) {
+    try {
+      
+      /**
+       * si se está realizando la elección del producto (compra)
+       */
+      if (this.subLevelId != null && this.categoryId != null) {
+        const productDTO = {
+          categoryId: this.categoryId,
+          subLevelId: this.subLevelId,
+          product: element
+        };
+        this.productDTO.emit(productDTO);
+      }
+    } catch (error) {
+
+    }
   }
 }

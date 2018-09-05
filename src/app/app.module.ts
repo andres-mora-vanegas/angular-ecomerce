@@ -16,6 +16,10 @@ import { AppService } from "./app.service";
 import { AvaibilityPipe } from './pipes/avaibility.pipe';
 import { ProductCategoryComponent } from './core/product/product-category/product-category.component';
 import { FormsModule } from "@angular/forms";
+import { RouterModalComponent } from "./shared/router-modal/router-modal.component";
+import { RouterModalService } from "./shared/router-modal/router-modal.service";
+import { MaterializeDirective } from "angular2-materialize";
+import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,9 @@ import { FormsModule } from "@angular/forms";
     ProductComponent,
     HomeComponent,
     AvaibilityPipe,
-    ProductCategoryComponent
+    ProductCategoryComponent,
+    RouterModalComponent,
+    SaleDetailComponent    
   ],
   imports: [
     BrowserModule,
@@ -38,7 +44,8 @@ import { FormsModule } from "@angular/forms";
     FormsModule
   ],
   providers: [
-    AppService
+    AppService,
+    RouterModalService
   ],
   bootstrap: [AppComponent]
 })

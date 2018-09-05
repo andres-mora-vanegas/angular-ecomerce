@@ -1,6 +1,6 @@
 <div class="example-header">
     <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
     </mat-form-field>
 </div>
 
@@ -25,7 +25,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
             <mat-cell *matCellDef="let row">
                 <span class="mobile-label">Nombre</span>
-                <div class="rightInfo">{{row.col2 }}</div>
+                <div class="rightInfo"><a href="#" (click)="chooseProduct(row);false">{{row.col2}}</a></div>
             </mat-cell>
         </ng-container>
 

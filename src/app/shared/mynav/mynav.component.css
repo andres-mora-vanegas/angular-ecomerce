@@ -16,7 +16,9 @@
   margin: auto;
   display: block;
 }
-
+.tool{
+  z-index: 1;
+}
 
 @media (max-width:767px) {
   .container{
