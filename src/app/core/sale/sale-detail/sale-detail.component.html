@@ -14,7 +14,7 @@
             <td>{{item.product.name}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.product.price}}</td>
-            <td>{{item.product.price| toNumber :item.quantity}} </td>
+            <td>{{item.product.price | toNumber :item.quantity }} </td>
             <td>
               <a href="#" (click)="edit(item);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">
                 <i class="fa fa-pencil"></i>
@@ -48,7 +48,7 @@
             </mat-select>
           </mat-form-field>
           <p>Valor individual: {{saleDto.product.price}}</p>
-          <p>Valor: {{amount}}</p>
+          <p>Valor: ${{amount | number}}</p>
           <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
           <button mat-raised-button (click)="saveChanges(false)" color="warn">Cancelar</button>
         </mat-card-content>

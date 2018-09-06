@@ -15,7 +15,7 @@
               <span>Selecciona el nivel</span>
               <app-product-category (subLevelOut)="findSubLevelSecond($event)" [categoryId]="categoryId" [subLevelIn]="subLevels" *ngIf="active"></app-product-category>
               <!-- (productDTO)="nextCartProcess($event)" [subLevelId]="subLevelId" [categoryId]="categoryId" -->
-              <app-product-filters *ngIf="categoryId!=null && categoryId>0 && subLevelId!=null && subLevelId>0"></app-product-filters>
+              <app-product-filters (filterDtoOut)="applyFilters($event)" [dataResult]="dataResult" *ngIf="categoryId!=null && categoryId>0 && subLevelId!=null && subLevelId>0"></app-product-filters>
             </mat-card-content>
           </mat-card>
         </mat-grid-tile>
@@ -28,7 +28,7 @@
               </mat-card-title>
             </mat-card-header>
             <mat-card-content class="dashboard-card-content">
-              <app-product-list (productDTO)="nextCartProcess($event)" [subLevelId]="subLevelId" [categoryId]="categoryId"></app-product-list>
+              <app-product-list (productDTO)="nextCartProcess($event)" (dataResult)="sendResultToFilter($event)" [filterDTO]="filterDTO" [subLevelId]="subLevelId" [categoryId]="categoryId"></app-product-list>
             </mat-card-content>
           </mat-card>
         </mat-grid-tile>
@@ -51,8 +51,9 @@
                 </mat-select>
               </mat-form-field>
               <p>Valor individual: {{productSelected.price}}</p>
-              <p>Valor: {{amount}}</p>
+              <p>Valor: $ {{amount | number}}</p>
               <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
+              <button mat-raised-button (click)="saveChanges(false)" color="warn">Cerrar</button>
             </mat-card-content>
           </mat-card>
         </div>

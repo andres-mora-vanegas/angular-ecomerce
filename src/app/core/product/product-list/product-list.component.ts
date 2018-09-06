@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChanges, OnChanges } from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { AppService } from "../../../app.service";
 import { ProductModel } from "../product.model";
+import { FilterDto } from "../filter.dto";
 
 
 @Component({
@@ -9,7 +10,7 @@ import { ProductModel } from "../product.model";
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.css"]
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnChanges {
   displayedColumns = ["col2", "col3", "col4", "col5", "col6"];
   dataSource: MatTableDataSource<any>;
 
@@ -17,12 +18,20 @@ export class ProductListComponent implements OnInit {
   subLevelId: number;
   @Input()
   categoryId: number;
+
+  @Input()
+  filterDTO: FilterDto;
   @Output()
   productDTO = new EventEmitter<any>();
+
+  @Output()
+  dataResult = new EventEmitter<any>();
+
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   @ViewChild(MatSort)
   sort: MatSort;
+  arrayData: Array<any>;
 
   constructor(private appService: AppService) { }
 
@@ -43,8 +52,9 @@ export class ProductListComponent implements OnInit {
    */
   converDataToDataTable(data: any) {
     try {
+      const localData = [];
       if (data.products.length > 0) {
-        const arrayData = [];
+        this.arrayData = [];
         data.products.forEach((element: ProductModel) => {
           let element_ = element;
           if (this.subLevelId != null && this.categoryId != null) {
@@ -52,6 +62,7 @@ export class ProductListComponent implements OnInit {
               element_ = new ProductModel();
             }
           }
+          localData.push(element_);
           const arrayItem = {
             col1: element_.id,
             col2: element_.name,
@@ -61,14 +72,15 @@ export class ProductListComponent implements OnInit {
             col6: element_.available
           };
           if (arrayItem.col1 != null && arrayItem.col5 != null) {
-            arrayData.push(arrayItem);
+            this.arrayData.push(arrayItem);
           }
         });
-        this.dataSource = new MatTableDataSource(arrayData);
+        this.dataSource = new MatTableDataSource(this.arrayData);
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }, 200);
+        this.dataResult.emit(localData);
       } else {
         console.log("No hay datos");
       }
@@ -94,7 +106,6 @@ export class ProductListComponent implements OnInit {
    */
   chooseProduct(element) {
     try {
-      
       /**
        * si se está realizando la elección del producto (compra)
        */
@@ -108,6 +119,56 @@ export class ProductListComponent implements OnInit {
       }
     } catch (error) {
 
+    }
+  }
+
+  edit(item: ProductModel) {
+    try {
+
+    } catch (error) {
+      this.appService.doCatch(error);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    try {
+      console.log(changes);
+      this.arrayData = [];
+      if (
+        changes.filterDTO != null &&
+        changes.filterDTO.currentValue != null &&
+        changes.filterDTO.currentValue.availity != null
+      ) {
+        /* this.arrayData.forEach(element => {
+          if (element.col6 != changes.availity) {
+            element = {};
+          }
+        }); */
+
+        this.dataSource.filterPredicate = (data:
+          { col6: string }, filterValue: string) =>
+          data.col6.trim().toLowerCase().indexOf(filterValue) !== -1;
+      }
+      if (changes.minQuantity) {
+
+      }
+      if (changes.maxQuantity) {
+
+      }
+      if (changes.minValue) {
+
+      }
+      if (changes.maxValue) {
+
+      }
+      /* if (changes.accountName.currentValue.length > 0) {
+        this.accountNameSend = changes.accountName.currentValue;
+        this.reset();
+        this.active = true;
+        this.getSubAccounts();
+      } */
+    } catch (error) {
+      this.appService.doCatch(error);
     }
   }
 }

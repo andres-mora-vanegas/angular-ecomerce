@@ -9,6 +9,7 @@ import { CategoryModel } from "../../core/product/category.model";
 import { AppService } from "./../../app.service";
 import { ProductModel } from "../../core/product/product.model";
 import { SaleDto } from "../../core/sale/sale.dto";
+import { FilterDto } from "../../core/product/filter.dto";
 
 @Component({
   selector: "app-shared/dashboard",
@@ -30,16 +31,19 @@ export class DashboardComponent implements OnInit {
   quantitys: number[];
   modal = false;
   arrSaleDto: Array<SaleDto>;
+  dataResult: Array<any>;
   breakpoint: number;
+  filterDTO: FilterDto;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private appService: AppService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.reset();
     this.arrSaleDto = new Array<SaleDto>();
+    this.handleStorage(true);
     this.validSizes();
   }
 
@@ -52,6 +56,7 @@ export class DashboardComponent implements OnInit {
     this.subLevels = new Array<CategoryModel>();
     this.productSelected = new ProductModel();
     this.quantitys = new Array<number>();
+    this.dataResult = new Array<any>();
     this.categoryId = 0;
     this.subLevelId = 0;
     this.amount = 0;
@@ -66,7 +71,6 @@ export class DashboardComponent implements OnInit {
       } else {
         this.reset();
       }
-      console.log($event);
     } catch (error) {
       this.appService.doCatch(error);
     }
@@ -81,9 +85,12 @@ export class DashboardComponent implements OnInit {
       this.reset();
     } */
     this.subLevelId = $event.subLevelId;
-    console.log($event);
   }
 
+  /**
+   * método que se encarga de procesar la elección del item
+   * @param $event archivo de tipo ProductModel
+   */
   nextCartProcess($event) {
     try {
       if ($event.product != null) {
@@ -98,7 +105,9 @@ export class DashboardComponent implements OnInit {
         this.productSelected = new ProductModel();
         // this.selectedIndexChange(0);
       }
-    } catch (error) {}
+    } catch (error) {
+      this.appService.doCatch(error);
+    }
   }
 
   /**
@@ -118,33 +127,83 @@ export class DashboardComponent implements OnInit {
         const numberPrice = parseInt(clearPrice, 0);
         this.amount = numberPrice * $event.value;
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
-  saveChanges() {
+  /**
+   * método que se encarga de agregar el producto al carrito
+   */
+  saveChanges(state = true) {
     try {
-      if (this.productQuantity > 0) {
-        this.modal = false;
-        const obj = {
-          product: this.productSelected,
-          quantity: this.productQuantity,
-          category: this.categoryId
-        };
-        this.arrSaleDto.push(obj);
-        this.clearSelected();
+      if (state) {
+        if (this.productQuantity > 0) {
+          this.modal = false;
+          const obj = {
+            product: this.productSelected,
+            quantity: this.productQuantity,
+            category: this.categoryId
+          };
+          this.arrSaleDto.push(obj);
+          this.handleStorage();
+          this.clearSelected();
+        } else {
+          this.notSelected = true;
+        }
       } else {
-        this.notSelected = true;
+        this.modal = false;
       }
+
     } catch (error) {
       this.appService.doCatch(error);
     }
   }
 
+  /**
+   * método que resetea el item elegido
+   */
   clearSelected() {
     this.productSelected = new ProductModel();
     this.productQuantity = 0;
   }
 
+  /**
+   * método que se encarga de guardar el array en el localStorage
+   * @param init parametro que indica si el componente se carga por primera vez.
+   */
+  handleStorage(init = false) {
+    try {
+      /**
+       * si se están guardando datos
+       */
+      if (init == false) {
+        const jsonifyCart = JSON.stringify(this.arrSaleDto);
+        localStorage.setItem("products", jsonifyCart);
+      }
+      /**
+       * si se van a consultar los articulos ya guardados en el storage
+       */
+      else {
+        if (localStorage.getItem("products")) {
+          const previusData = localStorage.getItem("products");
+          const jsonifyCart = JSON.parse(previusData);
+          this.arrSaleDto = jsonifyCart;
+          if (this.arrSaleDto.length > 0) {
+            this.detail = true;
+          }
+          // localStorage.setItem("products", "");
+        }
+      }
+    }
+    catch (error) {
+      this.appService.doCatch(error);
+    }
+
+  }
+
+  /**
+   * método que convierte los datos tipo cols hacia el producto
+   * @param row elemento tipo cols
+   */
   revertDataTableToRecord(row) {
     try {
       this.productSelected.id = row.col1;
@@ -182,5 +241,13 @@ export class DashboardComponent implements OnInit {
       breaki = 4;
     }
     this.breakpoint = breaki;
+  }
+
+  applyFilters($event) {
+    this.filterDTO = $event;
+  }
+
+  sendResultToFilter($event) {
+    this.dataResult = $event;
   }
 }

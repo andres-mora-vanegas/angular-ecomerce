@@ -49,6 +49,9 @@ estilos para el modal
 fin estilos del modal
 */
 
+.dashboard-card-content {
+  text-align: center;
+}
 
 .product-header{
   border-bottom: 1px solid #CCCCCC;

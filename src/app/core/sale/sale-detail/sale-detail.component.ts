@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from "@angular/core";
 import { SaleDto } from "../sale.dto";
 import { AppService } from "../../../app.service";
 import { ProductModel } from "../../product/product.model";
+import { ToNumberPipe } from "../../../pipes/to-number.pipe";
+import { ClearCaractersPipe } from "../../../pipes/clear-caracters.pipe";
 
 @Component({
   selector: "app-sale-detail",
@@ -16,7 +18,7 @@ export class SaleDetailComponent implements OnInit {
   quantitys: number[];
   amount: number;
   temporalQuantity: number;
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
     this.reset();
@@ -58,6 +60,8 @@ export class SaleDetailComponent implements OnInit {
     this.saleDto = item;
     this.generateQuantitys();
     this.temporalQuantity = item.quantity;
+    const tr = new ClearCaractersPipe().transform(item.product.price);
+    this.amount = item.quantity * parseInt(tr, 0);
     this.modal = true;
   }
 
@@ -74,7 +78,21 @@ export class SaleDetailComponent implements OnInit {
           element = this.saleDto;
         }
       });
+      this.handleStorage();
       this.reset();
     }
+  }
+
+  handleStorage() {
+    try {
+      if (localStorage.getItem("products")) {
+        const jsonifyCart = JSON.stringify(this.arrSaleDto);
+        localStorage.setItem("products", jsonifyCart);
+      }
+    }
+    catch (error) {
+      this.appService.doCatch(error);
+    }
+
   }
 }

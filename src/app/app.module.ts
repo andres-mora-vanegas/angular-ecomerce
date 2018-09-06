@@ -22,6 +22,7 @@ import { MaterializeDirective } from "angular2-materialize";
 import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.component';
 import { ToNumberPipe } from './pipes/to-number.pipe';
 import { ProductFiltersComponent } from './core/product/product-filters/product-filters.component';
+import { ClearCaractersPipe } from './pipes/clear-caracters.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ProductFiltersComponent } from './core/product/product-filters/product-
     RouterModalComponent,
     SaleDetailComponent,
     ToNumberPipe,
-    ProductFiltersComponent
+    ProductFiltersComponent,
+    ClearCaractersPipe
   ],
   imports: [
     BrowserModule,
