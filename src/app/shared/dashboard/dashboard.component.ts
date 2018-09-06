@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   categoryId: number;
   active: boolean;
   detail: boolean;
+  notSelected: boolean;
   bill: boolean;
   selectedIndex: number;
   productQuantity: number;
@@ -29,14 +30,21 @@ export class DashboardComponent implements OnInit {
   quantitys: number[];
   modal = false;
   arrSaleDto: Array<SaleDto>;
+  breakpoint: number;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private appService: AppService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.reset();
+    this.arrSaleDto = new Array<SaleDto>();
+    this.validSizes();
+  }
+
+  onResize(event) {
+    this.validSizes();
   }
 
   reset() {
@@ -47,7 +55,6 @@ export class DashboardComponent implements OnInit {
     this.categoryId = 0;
     this.subLevelId = 0;
     this.amount = 0;
-    this.arrSaleDto = new Array<SaleDto>();
   }
 
   findSubLevel($event) {
@@ -91,14 +98,12 @@ export class DashboardComponent implements OnInit {
         this.productSelected = new ProductModel();
         // this.selectedIndexChange(0);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   /**
    * método que se encarga de cambiar la pestaña
-   * @param number id de la pestaña 
+   * @param number id de la pestaña
    */
   selectedIndexChange(number) {
     this.selectedIndex = number;
@@ -107,25 +112,29 @@ export class DashboardComponent implements OnInit {
   multiply($event) {
     try {
       if ($event.value) {
-        const clearPrice = this.productSelected.price.replace("$", "").replace(",", "");
+        const clearPrice = this.productSelected.price
+          .replace("$", "")
+          .replace(",", "");
         const numberPrice = parseInt(clearPrice, 0);
         this.amount = numberPrice * $event.value;
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   saveChanges() {
     try {
-      this.modal = false;
-      const obj = {
-        product: this.productSelected,
-        quantity: this.productQuantity,
-        category: this.categoryId
-      };
-      this.arrSaleDto.push(obj);
-      this.clearSelected();
+      if (this.productQuantity > 0) {
+        this.modal = false;
+        const obj = {
+          product: this.productSelected,
+          quantity: this.productQuantity,
+          category: this.categoryId
+        };
+        this.arrSaleDto.push(obj);
+        this.clearSelected();
+      } else {
+        this.notSelected = true;
+      }
     } catch (error) {
       this.appService.doCatch(error);
     }
@@ -158,6 +167,20 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       this.appService.doCatch(error);
     }
+  }
 
+  validSizes() {
+    const w = window.innerWidth;
+    let breaki = 1;
+    if (w < 400) {
+      breaki = 1;
+    } else if (w > 400 && w < 750) {
+      breaki = 2;
+    } else if (w > 751 && w < 1024) {
+      breaki = 3;
+    } else if (w > 1025) {
+      breaki = 4;
+    }
+    this.breakpoint = breaki;
   }
 }

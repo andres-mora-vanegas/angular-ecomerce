@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Filtros de busqueda</h2>
+  <form class="example-container" (submit)="$event" [formGroup]="options">
+    <mat-form-field>
+      <mat-select name="a" placeholder="Disponibilidad" [(formGroup)]="filterDTO.availity" (selectionChange)="multiply($event)">
+        <mat-option *ngFor="let quantity of quantitys" [value]="quantity">{{quantity}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <h3>Rango de precios</h3>
+    <p>precio mínimo</p>
+    <mat-slider class="example-margin" [max]="maxValue" [min]="minValue" [(ngModel)]="filterDTO.minValue" [vertical]="vertical">
+    </mat-slider>
+    <p>precio máximo</p>
+    <mat-slider class="example-margin" [max]="maxValue" [min]="minValue" [(ngModel)]="filterDTO.maxValue" [vertical]="vertical">
+    </mat-slider>
+
+    <h3>Cantidad disponible de productos</h3>
+    <p>Mínimo</p>
+    <mat-slider class="example-margin" [max]="maxQuantity" [min]="minQuantity" [(ngModel)]="filterDTO.minQuantity" [vertical]="vertical">
+    </mat-slider>
+    <p>Máximo</p>
+    <mat-slider class="example-margin" [max]="maxQuantity" [min]="minQuantity" [(ngModel)]="filterDTO.maxQuantity" [vertical]="vertical">
+    </mat-slider>
+    <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
+  </form>
+</div>

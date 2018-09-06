@@ -12,12 +12,49 @@ body {
 }
 
 .mat-toolbar {
-  z-index: 1;
+  z-index: 2;
+}
+
+mat-toolbar{
+  z-index: 2;
 }
 
 .mat-grid-list {
   z-index: 0;
 }
+
+/**
+estilos para el modal
+*/
+.overlay{
+  position: fixed;
+  height: 100%;
+  top:0;
+  width: 100%;
+  background:rgb(1, 1, 1,.7) ;
+  z-index: 2;
+  left: 0;
+}
+.overlay-white{
+  width: 50%;
+  top: 20%;
+  left:25%;
+  z-index: 3;
+  display: block;
+  position: fixed;
+  min-height: 400px;
+  height: auto;
+}
+/**
+fin estilos del modal
+*/
+
+
+.product-header{
+  border-bottom: 1px solid #CCCCCC;
+}
+
+
 
 /* **************
 estilos para tabla responsive

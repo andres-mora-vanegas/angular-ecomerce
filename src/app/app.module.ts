@@ -15,11 +15,13 @@ import { MaterialModule } from "./material/material.module";
 import { AppService } from "./app.service";
 import { AvaibilityPipe } from './pipes/avaibility.pipe';
 import { ProductCategoryComponent } from './core/product/product-category/product-category.component';
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModalComponent } from "./shared/router-modal/router-modal.component";
 import { RouterModalService } from "./shared/router-modal/router-modal.service";
 import { MaterializeDirective } from "angular2-materialize";
 import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.component';
+import { ToNumberPipe } from './pipes/to-number.pipe';
+import { ProductFiltersComponent } from './core/product/product-filters/product-filters.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.compone
     AvaibilityPipe,
     ProductCategoryComponent,
     RouterModalComponent,
-    SaleDetailComponent    
+    SaleDetailComponent,
+    ToNumberPipe,
+    ProductFiltersComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,8 @@ import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.compone
     RoutingModule,
     HttpClientModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     AppService,

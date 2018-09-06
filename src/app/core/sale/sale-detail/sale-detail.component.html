@@ -1,16 +1,58 @@
-<table>
-  <thead>
-    <th>Nombre</th>
-    <th>Cantidad</th>
-    <th>Valor unitario</th>
-    <th>Valor total</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of arrSaleDto" >
-      <td>{{item.product.name}}</td>
-      <td>{{item.quantity}}</td>
-      <td>{{item.product.price}}</td>
-      <td>{{item.product.price}} * {{item.quantity}}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <mat-grid-list cols="3" rowHeight="850px">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <table>
+        <thead>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+          <th>Valor unitario</th>
+          <th>Valor total</th>
+          <th>Acción</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of arrSaleDto">
+            <td>{{item.product.name}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.product.price}}</td>
+            <td>{{item.product.price| toNumber :item.quantity}} </td>
+            <td>
+              <a href="#" (click)="edit(item);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">
+                <i class="fa fa-pencil"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <button mat-raised-button color="primary" matTooltip="Confirmar proceso y facturar" aria-label="Button that displays a tooltip when focused or hovered over">
+        <i class="fa fa-check"></i>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>
+<div class="container-overlay" *ngIf="saleDto!=null && saleDto.product.id!=null && modal">
+    <div class="overlay-white">
+      <mat-card class="dashboard-card">
+        <mat-card-header class="product-header">
+          <mat-card-title>
+            <h2 class="product-title">{{saleDto.product.name}}</h2>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <p [class.text-danger]="notSelected">Por favor elige la cantidad que deseas</p>
+          <mat-form-field>
+            <mat-select name="a" [(value)]="saleDto.quantity" [(ngModel)]="saleDto.quantity" (selectionChange)="multiply($event)">
+              <mat-option *ngFor="let quantity of quantitys" [value]="quantity">{{quantity}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p>Valor individual: {{saleDto.product.price}}</p>
+          <p>Valor: {{amount}}</p>
+          <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
+          <button mat-raised-button (click)="saveChanges(false)" color="warn">Cancelar</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="overlay"></div>
+  </div>

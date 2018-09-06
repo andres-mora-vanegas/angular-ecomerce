@@ -25,7 +25,10 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
             <mat-cell *matCellDef="let row">
                 <span class="mobile-label">Nombre</span>
-                <div class="rightInfo"><a href="#" (click)="chooseProduct(row);false">{{row.col2}}</a></div>
+                <div class="rightInfo">
+                    <a href="#" *ngIf="row.col6" (click)="chooseProduct(row);false" matTooltip="Agregar producto a la compra" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</a>
+                    <span *ngIf="!row.col6" matTooltip="El producto no está disponible" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</span>
+                </div>
             </mat-cell>
         </ng-container>
 
