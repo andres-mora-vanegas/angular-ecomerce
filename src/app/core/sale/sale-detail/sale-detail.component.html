@@ -1,11 +1,16 @@
 <table>
   <thead>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th>Nombre</th>
+    <th>Cantidad</th>
+    <th>Valor unitario</th>
+    <th>Valor total</th>
   </thead>
   <tbody>
-    
+    <tr *ngFor="let item of arrSaleDto" >
+      <td>{{item.product.name}}</td>
+      <td>{{item.quantity}}</td>
+      <td>{{item.product.price}}</td>
+      <td>{{item.product.price}} * {{item.quantity}}</td>
+    </tr>
   </tbody>
 </table>

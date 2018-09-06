@@ -4,7 +4,7 @@
     <mat-tab label="Productos">
       <h1 class="mat-h1">Productos</h1>
       <!--  -->
-      <mat-grid-list cols="2" rowHeight="150px">
+      <mat-grid-list cols="3" rowHeight="850px">
         <mat-grid-tile [colspan]="1" [rowspan]="1">
           <mat-card class="dashboard-card">
             <mat-card-header>
@@ -14,26 +14,13 @@
             </mat-card-header>
             <mat-card-content class="dashboard-card-content">
               <app-product-category (subLevelOut)="findSubLevel($event)"></app-product-category>
+              <span>Selecciona el nivel</span>
+              <app-product-category (subLevelOut)="findSubLevelSecond($event)" [categoryId]="categoryId" [subLevelIn]="subLevels" *ngIf="active"></app-product-category>
             </mat-card-content>
           </mat-card>
         </mat-grid-tile>
 
-        <mat-grid-tile [colspan]="1" [rowspan]="1" *ngIf="active">
-          <mat-card class="dashboard-card">
-            <mat-card-header>
-              <mat-card-title>
-                <span>Selecciona el nivel</span>
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="dashboard-card-content">
-              <app-product-category (subLevelOut)="findSubLevelSecond($event)" [categoryId]="categoryId" [subLevelIn]="subLevels"></app-product-category>
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-
-      <mat-grid-list cols="1" *ngIf="categoryId!=null && categoryId>0 && subLevelId>0">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="categoryId!=null && categoryId>0 && subLevelId>0">
           <mat-card class="dashboard-card">
             <mat-card-header>
               <mat-card-title>
@@ -46,6 +33,7 @@
           </mat-card>
         </mat-grid-tile>
       </mat-grid-list>
+
 
       <div class="container-overlay" *ngIf="productSelected!=null && productSelected.id!=null && modal">
         <div class="overlay-white">
@@ -73,7 +61,7 @@
 
     </mat-tab>
     <mat-tab label="Detalle" [disabled]="!detail">
-      <app-detail [arrSaleDto]="arrSaleDto"></app-detail>
+      <app-sale-detail [arrSaleDto]="arrSaleDto"></app-sale-detail>
     </mat-tab>
     <mat-tab label="Facturación" [disabled]="!bill">
       <p>Facturación</p>
