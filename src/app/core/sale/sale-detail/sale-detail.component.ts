@@ -95,18 +95,7 @@ export class SaleDetailComponent implements OnInit {
       this.appService.handleStorage(false, this.arrSaleDto);
       this.reset();
     }
-  }
-
-  handleStorage() {
-    try {
-      if (localStorage.getItem("products")) {
-        const jsonifyCart = JSON.stringify(this.arrSaleDto);
-        localStorage.setItem("products", jsonifyCart);
-      }
-    } catch (error) {
-      this.appService.doCatch(error);
-    }
-  }
+  }  
 
   doBill() {
     this.successCartOut.emit(true);

@@ -2,41 +2,41 @@
   <div class="row">
     <div class="col s12 m9 ">
       <h2>Productos elegidos</h2>
-      <table>
-        <thead>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-          <th>Valor unitario</th>
-          <th>Valor total</th>
-          <th>Acción</th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of arrSaleDto">
-            <td>{{item.product.name}}</td>
-            <td>{{item.quantity}}</td>
-            <td>{{item.product.price}}</td>
-            <td>{{item.product.price | toNumber :item.quantity }} </td>
-            <td>
-              <a href="#" (click)="edit(item);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">
-                <i class="fa fa-pencil"></i>
-              </a>
-              <a href="#" (click)="remove(item);false" matTooltip="Eliminar producto" aria-label="Button that displays a tooltip when focused or hovered over">
-                <i class="fa fa-trash"></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-content">
+        <table>
+          <thead>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Valor unitario</th>
+            <th>Valor total</th>
+            <th>Acción</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of arrSaleDto">
+              <td>{{item.product.name}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.product.price}}</td>
+              <td>{{item.product.price | toNumber :item.quantity }} </td>
+              <td>
+                <a href="#" (click)="edit(item);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a href="#" (click)="remove(item);false" matTooltip="Eliminar producto" aria-label="Button that displays a tooltip when focused or hovered over">
+                  <i class="fa fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="col s12 m3 ">
-      <button mat-raised-button color="primary" (click)="doBill()" matTooltip="Confirmar proceso y facturar" aria-label="Button that displays a tooltip when focused or hovered over">
+      <button mat-raised-button color="primary" class="confirm" (click)="doBill()" matTooltip="Confirmar proceso y facturar" aria-label="Button that displays a tooltip when focused or hovered over">
         <i class="fa fa-check"></i>
       </button>
     </div>
   </div>
-
-
 
   <div class="container-overlay" *ngIf="saleDto!=null && saleDto.product.id!=null && modal">
     <div class="overlay-white">

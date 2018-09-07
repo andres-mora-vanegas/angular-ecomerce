@@ -4,8 +4,7 @@
     <mat-tab label="Productos">
       <div class="row">
         <div class="col s12 m4 l3">
-          <app-product-category (subLevelOut)="findSubLevel($event)"></app-product-category>
-          <span>Selecciona el nivel</span>
+          <app-product-category (subLevelOut)="findSubLevel($event)"></app-product-category>          
           <app-product-category (subLevelOut)="findSubLevelSecond($event)" [categoryId]="categoryId" [subLevelIn]="subLevels" *ngIf="active"></app-product-category>
           <!-- (productDTO)="nextCartProcess($event)" [subLevelId]="subLevelId" [categoryId]="categoryId" -->
           <mat-accordion *ngIf="categoryId!=null && categoryId>0 && subLevelId!=null && subLevelId>0">

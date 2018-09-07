@@ -23,8 +23,9 @@ import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.compone
 import { ToNumberPipe } from './pipes/to-number.pipe';
 import { ProductFiltersComponent } from './core/product/product-filters/product-filters.component';
 import { ClearCaractersPipe } from './pipes/clear-caracters.pipe';
-import { ProductListService } from "dist/ecomerce/core/product/product-list/product-list.service";
+
 import { NoticeComponent } from './core/sale/notice/notice.component';
+import { ProductListService } from "./core/product/product-list/product-list.service";
 
 @NgModule({
   declarations: [

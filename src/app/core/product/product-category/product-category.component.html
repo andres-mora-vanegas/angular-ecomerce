@@ -9,7 +9,7 @@
       </mat-form-field>
     </div> -->
     <div class="col s12 m6 offset-m3">
-      <mat-form-field> 
+      <mat-form-field class="auto" > 
         <label for="">{{placeholder}}</label>
         <mat-select name="category"  [(ngModel)]="categoryIdInitial" (selectionChange)="findSubLevels($event)">
           <mat-option *ngFor="let category of arrCategoryModel" [(value)]="category.id+'-'+category.name">{{category.name}}</mat-option>
