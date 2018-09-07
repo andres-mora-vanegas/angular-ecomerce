@@ -8,3 +8,8 @@
 .not-found img{
     width: 100%;
 }
+
+.custom{
+    padding:5px 10px;
+    background: green;
+}

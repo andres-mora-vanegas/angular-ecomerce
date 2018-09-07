@@ -122,9 +122,7 @@ label{
 @media(max-width: 600px) {
   .overlay-white {
     width: 90%;
-    left: 5%;
-    z-index: 4;
-    min-height: 400px;
+    left: 5%;        
   }
 
   .auto,mat-form-field,mat-slider {
