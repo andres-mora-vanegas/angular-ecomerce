@@ -20,6 +20,10 @@
   z-index: 1;
 }
 
+.custom-color{
+  background-color: #0d47a1;
+}
+
 @media (max-width:767px) {
   .container{
     width: 95%;

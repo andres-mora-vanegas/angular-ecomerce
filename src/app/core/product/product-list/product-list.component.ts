@@ -142,7 +142,7 @@ export class ProductListComponent implements OnInit, OnChanges {
         };
         this.productDTO.emit(productDTO);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   /**
@@ -234,5 +234,15 @@ export class ProductListComponent implements OnInit, OnChanges {
     } catch (error) {
       this.appService.doCatch(error);
     }
+  }
+
+  edit() {
+    try {
+
+    }
+    catch (error) {
+      this.appService.doCatch(error);
+    }
+
   }
 }
