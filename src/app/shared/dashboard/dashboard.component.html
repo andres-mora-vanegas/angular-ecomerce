@@ -1,71 +1,67 @@
 <div class="grid-container">
-  <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4" (selectedIndexChange)="selectedIndexChange($event)"
+  <mat-tab-group [dynamicHeight]="dynamicHeight" mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4" (selectedIndexChange)="selectedIndexChange($event)"
     [selectedIndex]="selectedIndex">
     <mat-tab label="Productos">
-      <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)" rowHeight="850px">
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-          <mat-card class="dashboard-card">
-            <mat-card-header>
-              <mat-card-title>
-
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="dashboard-card-content">
-              <app-product-category (subLevelOut)="findSubLevel($event)"></app-product-category>
-              <span>Selecciona el nivel</span>
-              <app-product-category (subLevelOut)="findSubLevelSecond($event)" [categoryId]="categoryId" [subLevelIn]="subLevels" *ngIf="active"></app-product-category>
-              <!-- (productDTO)="nextCartProcess($event)" [subLevelId]="subLevelId" [categoryId]="categoryId" -->
+      <div class="row">
+        <div class="col s12 m4 l3">
+          <app-product-category (subLevelOut)="findSubLevel($event)"></app-product-category>
+          <span>Selecciona el nivel</span>
+          <app-product-category (subLevelOut)="findSubLevelSecond($event)" [categoryId]="categoryId" [subLevelIn]="subLevels" *ngIf="active"></app-product-category>
+          <!-- (productDTO)="nextCartProcess($event)" [subLevelId]="subLevelId" [categoryId]="categoryId" -->
+          <mat-accordion *ngIf="categoryId!=null && categoryId>0 && subLevelId!=null && subLevelId>0">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Filtros
+                </mat-panel-title>
+              </mat-expansion-panel-header>
               <app-product-filters (filterDtoOut)="applyFilters($event)" [dataResult]="dataResult" *ngIf="categoryId!=null && categoryId>0 && subLevelId!=null && subLevelId>0"></app-product-filters>
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-
-        <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="categoryId!=null && categoryId>0 && subLevelId>0">
-          <mat-card class="dashboard-card">
-            <mat-card-header>
-              <mat-card-title>
-                <span>Selecciona el producto</span>
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="dashboard-card-content">
-              <app-product-list (productDTO)="nextCartProcess($event)" (dataResult)="sendResultToFilter($event)" [filterDTO]="filterDTO" [subLevelId]="subLevelId" [categoryId]="categoryId"></app-product-list>
-            </mat-card-content>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-
-
-      <div class="container-overlay" *ngIf="productSelected!=null && productSelected.id!=null && modal">
-        <div class="overlay-white">
-          <mat-card class="dashboard-card">
-            <mat-card-header class="product-header">
-              <mat-card-title>
-                <h2 class="product-title">{{productSelected.name}}</h2>
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="dashboard-card-content">
-              <p [class.text-danger]="notSelected">Por favor elige la cantidad que deseas</p>
-              <mat-form-field>
-                <mat-select name="a" [(ngModel)]="productQuantity" (selectionChange)="multiply($event)">
-                  <mat-option *ngFor="let quantity of quantitys" [value]="quantity">{{quantity}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <p>Valor individual: {{productSelected.price}}</p>
-              <p>Valor: $ {{amount | number}}</p>
-              <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
-              <button mat-raised-button (click)="saveChanges(false)" color="warn">Cerrar</button>
-            </mat-card-content>
-          </mat-card>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
-        <div class="overlay"></div>
+        <div class="col s12 m8 l9" *ngIf="categoryId!=null && categoryId>0 && subLevelId>0">
+          <app-product-list (productDTO)="nextCartProcess($event)" (dataResult)="sendResultToFilter($event)" [filterDTO]="filterDTO"
+            [subLevelId]="subLevelId" [categoryId]="categoryId"></app-product-list>
+        </div>
       </div>
-
     </mat-tab>
-    <mat-tab label="Detalle" [disabled]="!detail">
-      <app-sale-detail [arrSaleDto]="arrSaleDto"></app-sale-detail>
+    <mat-tab label="Detalle" [disabled]="!detail ">
+      <app-sale-detail [arrSaleDto]="arrSaleDto" (successCartOut)="successCart()"></app-sale-detail>
     </mat-tab>
     <mat-tab label="Facturación" [disabled]="!bill">
-      <p>Facturación</p>
+      <app-notice></app-notice>
     </mat-tab>
   </mat-tab-group>
+</div>
+<div class="container-overlay" *ngIf="productSelected!=null && productSelected.id!=null && modal">
+  <div class="overlay-white">
+    <mat-card class="dashboard-card">
+      <mat-card-header class="product-header">
+        <mat-card-title>
+          <h2 class="product-title">{{productSelected.name}}</h2>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="dashboard-card-content">
+        <p [class.text-danger]="notSelected">Por favor elige la cantidad que deseas</p>
+        <mat-form-field>
+          <mat-select name="a" [(ngModel)]="productQuantity" (selectionChange)="multiply($event)">
+            <mat-option *ngFor="let quantity of quantitys" [value]="quantity">{{quantity}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <p>Valor individual: {{productSelected.price}}</p>
+        <p>Valor: $ {{amount | number}}</p>
+        <div class="row">
+          <div class="col s6 m4 offset-m4">
+            <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
+          </div>
+          <div class="col s6 m4">
+            <button mat-raised-button (click)="saveChanges(false)" color="warn">Cerrar</button>
+          </div>
+        </div>
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="overlay"></div>
 </div>

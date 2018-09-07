@@ -34,16 +34,21 @@ export class DashboardComponent implements OnInit {
   dataResult: Array<any>;
   breakpoint: number;
   filterDTO: FilterDto;
+  dynamicHeight = true;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private appService: AppService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.reset();
     this.arrSaleDto = new Array<SaleDto>();
-    this.handleStorage(true);
+    this.arrSaleDto = this.appService.handleStorage(true, this.arrSaleDto);
+    if (this.arrSaleDto.length > 0) {
+      this.detail = true;
+      this.selectedIndexChange(1);
+    }
     this.validSizes();
   }
 
@@ -77,13 +82,6 @@ export class DashboardComponent implements OnInit {
   }
 
   findSubLevelSecond($event) {
-    /* if ($event.subLevels && $event.categoryId) {
-      this.subLevels = $event.subLevels;
-      this.categoryId = $event.categoryId;
-      this.active = true;
-    } else {
-      this.reset();
-    } */
     this.subLevelId = $event.subLevelId;
   }
 
@@ -98,7 +96,6 @@ export class DashboardComponent implements OnInit {
         this.modal = true;
         this.revertDataTableToRecord($event.product);
         this.generateQuantitys();
-        // this.selectedIndexChange(1);
       } else {
         this.detail = false;
         this.modal = false;
@@ -127,7 +124,7 @@ export class DashboardComponent implements OnInit {
         const numberPrice = parseInt(clearPrice, 0);
         this.amount = numberPrice * $event.value;
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 
   /**
@@ -144,7 +141,8 @@ export class DashboardComponent implements OnInit {
             category: this.categoryId
           };
           this.arrSaleDto.push(obj);
-          this.handleStorage();
+          this.appService.handleStorage(false, this.arrSaleDto);
+          this.appService.snack("Producto agregado correctamente");
           this.clearSelected();
         } else {
           this.notSelected = true;
@@ -152,7 +150,6 @@ export class DashboardComponent implements OnInit {
       } else {
         this.modal = false;
       }
-
     } catch (error) {
       this.appService.doCatch(error);
     }
@@ -164,40 +161,6 @@ export class DashboardComponent implements OnInit {
   clearSelected() {
     this.productSelected = new ProductModel();
     this.productQuantity = 0;
-  }
-
-  /**
-   * método que se encarga de guardar el array en el localStorage
-   * @param init parametro que indica si el componente se carga por primera vez.
-   */
-  handleStorage(init = false) {
-    try {
-      /**
-       * si se están guardando datos
-       */
-      if (init == false) {
-        const jsonifyCart = JSON.stringify(this.arrSaleDto);
-        localStorage.setItem("products", jsonifyCart);
-      }
-      /**
-       * si se van a consultar los articulos ya guardados en el storage
-       */
-      else {
-        if (localStorage.getItem("products")) {
-          const previusData = localStorage.getItem("products");
-          const jsonifyCart = JSON.parse(previusData);
-          this.arrSaleDto = jsonifyCart;
-          if (this.arrSaleDto.length > 0) {
-            this.detail = true;
-          }
-          // localStorage.setItem("products", "");
-        }
-      }
-    }
-    catch (error) {
-      this.appService.doCatch(error);
-    }
-
   }
 
   /**
@@ -244,10 +207,22 @@ export class DashboardComponent implements OnInit {
   }
 
   applyFilters($event) {
+    this.filterDTO = new FilterDto();
     this.filterDTO = $event;
   }
 
   sendResultToFilter($event) {
     this.dataResult = $event;
+  }
+
+  successCart() {
+    this.bill = true;
+    this.selectedIndexChange(2);
+    setTimeout(() => {
+      this.detail = this.bill = false;
+      this.selectedIndexChange(0);
+      localStorage.clear();
+      this.ngOnInit();
+    }, 3000);
   }
 }

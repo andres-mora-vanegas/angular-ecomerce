@@ -1,5 +1,5 @@
 export class FilterDto {
-  public availity: number;
+  public availity: boolean;
   public minValue: number;
   public maxValue: number;
   public minQuantity: number;

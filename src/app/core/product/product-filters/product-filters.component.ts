@@ -1,7 +1,16 @@
-import { Component, OnInit, EventEmitter, Output, Input, SimpleChanges, OnChanges } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { FilterDto } from "../filter.dto";
 import { AppService } from "../../../app.service";
+import { ProductListService } from "../product-list/product-list.service";
 
 @Component({
   selector: "app-product-filters",
@@ -24,7 +33,8 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
 
   constructor(
     /* fb: FormBuilder,  */
-    private appService: AppService
+    private appService: AppService,
+    private productListService: ProductListService
   ) {
     /* this.options = fb.group({
       hideRequired: false,
@@ -46,30 +56,31 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
 
   generateAvaility() {
     this.availity = [];
-    this.availity.push({ state: true, name: 'Si' });
-    this.availity.push({ state: false, name: 'No' });
+    this.availity.push({ state: true, name: "Si" });
+    this.availity.push({ state: false, name: "No" });
   }
 
   generateAmmounts() {
     try {
       if (this.dataResult.length > 0) {
         this.dataResult.forEach(element => {
-          if (
-            element.price != null &&
-            element.quantity != null
-          ) {
+          if (element.price != null && element.quantity != null) {
             const clearPrice = parseInt(element.price.replace(/\$|,/g, ""), 0);
             if (clearPrice < this.minValue) {
               this.minValue = clearPrice;
+              /* this.filterDTO.minValue = clearPrice; */
             }
             if (clearPrice > this.maxValue) {
               this.maxValue = clearPrice;
+              /* this.filterDTO.maxValue = clearPrice; */
             }
             if (element.quantity < this.minQuantity) {
               this.minQuantity = element.quantity;
+              /* this.filterDTO.minQuantity = element.quantity; */
             }
             if (element.quantity > this.maxQuantity) {
               this.maxQuantity = element.quantity;
+              /* this.filterDTO.maxQuantity = element.quantity; */
             }
           }
         });
@@ -77,12 +88,14 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
     } catch (error) {
       this.appService.doCatch(error);
     }
-
   }
 
   doPost($event) {
     try {
-      this.filterDtoOut.emit(this.filterDTO);
+      console.log("emitiendo");
+      console.log(this.filterDTO);
+      this.productListService.updateProductList(this.filterDTO);
+      //this.filterDtoOut.emit(this.filterDTO);
     } catch (error) {
       this.appService.doCatch(error);
     }

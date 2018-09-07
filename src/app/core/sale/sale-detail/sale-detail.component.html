@@ -1,6 +1,7 @@
-<div class="container">
-  <mat-grid-list cols="3" rowHeight="850px">
-    <mat-grid-tile [colspan]="2" [rowspan]="1">
+<div class="container" *ngIf="arrSaleDto.length>0">
+  <div class="row">
+    <div class="col s12 m9 ">
+      <h2>Productos elegidos</h2>
       <table>
         <thead>
           <th>Nombre</th>
@@ -19,20 +20,25 @@
               <a href="#" (click)="edit(item);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">
                 <i class="fa fa-pencil"></i>
               </a>
+              <a href="#" (click)="remove(item);false" matTooltip="Eliminar producto" aria-label="Button that displays a tooltip when focused or hovered over">
+                <i class="fa fa-trash"></i>
+              </a>
             </td>
           </tr>
         </tbody>
       </table>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <button mat-raised-button color="primary" matTooltip="Confirmar proceso y facturar" aria-label="Button that displays a tooltip when focused or hovered over">
+    </div>
+
+    <div class="col s12 m3 ">
+      <button mat-raised-button color="primary" (click)="doBill()" matTooltip="Confirmar proceso y facturar" aria-label="Button that displays a tooltip when focused or hovered over">
         <i class="fa fa-check"></i>
       </button>
-    </mat-grid-tile>
-  </mat-grid-list>
+    </div>
+  </div>
 
-</div>
-<div class="container-overlay" *ngIf="saleDto!=null && saleDto.product.id!=null && modal">
+
+
+  <div class="container-overlay" *ngIf="saleDto!=null && saleDto.product.id!=null && modal">
     <div class="overlay-white">
       <mat-card class="dashboard-card">
         <mat-card-header class="product-header">
@@ -49,10 +55,17 @@
           </mat-form-field>
           <p>Valor individual: {{saleDto.product.price}}</p>
           <p>Valor: ${{amount | number}}</p>
-          <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
-          <button mat-raised-button (click)="saveChanges(false)" color="warn">Cancelar</button>
+          <div class="row">
+            <div class="col s6 m4 offset-m4">
+              <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
+            </div>
+            <div class="col s6 m4 offset-m4">
+              <button mat-raised-button (click)="saveChanges(false)" color="warn">Cancelar</button>
+            </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
     <div class="overlay"></div>
   </div>
+</div>

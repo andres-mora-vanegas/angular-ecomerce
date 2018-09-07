@@ -2,7 +2,7 @@
   <p>Filtros de busqueda</p>
   <form class="example-container" (ngSubmit)="doPost($event);false">
     <mat-form-field>
-      <mat-select name="availity" placeholder="Disponibilidad" [(ngModel)]="filterDTO.availity" (selectionChange)="multiply($event)">
+      <mat-select name="availity" placeholder="Disponibilidad" [(ngModel)]="filterDTO.availity">
         <mat-option *ngFor="let item of availity" [value]="item.state">{{item.name}}</mat-option>
       </mat-select>
     </mat-form-field>

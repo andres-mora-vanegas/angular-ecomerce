@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { SaleDto } from "../sale.dto";
 import { AppService } from "../../../app.service";
 import { ProductModel } from "../../product/product.model";
@@ -18,7 +18,9 @@ export class SaleDetailComponent implements OnInit {
   quantitys: number[];
   amount: number;
   temporalQuantity: number;
-  constructor(private appService: AppService) { }
+  @Output()
+  successCartOut = new EventEmitter<any>();
+  constructor(private appService: AppService) {}
 
   ngOnInit() {
     this.reset();
@@ -65,6 +67,18 @@ export class SaleDetailComponent implements OnInit {
     this.modal = true;
   }
 
+  remove(item: SaleDto) {
+    try {
+      const toDelete = this.arrSaleDto.findIndex(
+        x => x.product.id === item.product.id
+      );
+      this.arrSaleDto.splice(toDelete, 1);
+      this.appService.handleStorage(false, this.arrSaleDto);
+    } catch (error) {
+      this.appService.doCatch(error);
+    }
+  }
+
   saveChanges(state = true) {
     if (state == false) {
       this.modal = false;
@@ -78,7 +92,7 @@ export class SaleDetailComponent implements OnInit {
           element = this.saleDto;
         }
       });
-      this.handleStorage();
+      this.appService.handleStorage(false, this.arrSaleDto);
       this.reset();
     }
   }
@@ -89,10 +103,12 @@ export class SaleDetailComponent implements OnInit {
         const jsonifyCart = JSON.stringify(this.arrSaleDto);
         localStorage.setItem("products", jsonifyCart);
       }
-    }
-    catch (error) {
+    } catch (error) {
       this.appService.doCatch(error);
     }
+  }
 
+  doBill() {
+    this.successCartOut.emit(true);
   }
 }

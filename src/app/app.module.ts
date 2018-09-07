@@ -23,6 +23,8 @@ import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.compone
 import { ToNumberPipe } from './pipes/to-number.pipe';
 import { ProductFiltersComponent } from './core/product/product-filters/product-filters.component';
 import { ClearCaractersPipe } from './pipes/clear-caracters.pipe';
+import { ProductListService } from "dist/ecomerce/core/product/product-list/product-list.service";
+import { NoticeComponent } from './core/sale/notice/notice.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { ClearCaractersPipe } from './pipes/clear-caracters.pipe';
     SaleDetailComponent,
     ToNumberPipe,
     ProductFiltersComponent,
-    ClearCaractersPipe
+    ClearCaractersPipe,
+    NoticeComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ import { ClearCaractersPipe } from './pipes/clear-caracters.pipe';
   ],
   providers: [
     AppService,
-    RouterModalService
+    RouterModalService,
+    ProductListService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,22 @@
-.container{
-    display: block;
-    margin: auto;
-    padding:10px;
-  }
+.container {
+  display: block;
+  margin: auto;
+  padding: 10px;
+}
+
+.container h2 {
+  text-align: center;
+}
+
+/* .container *{
+      font-size: 25px;
+  } */
+
+.container td {
+  padding: 10px 20px;
+}
+
+.container i {
+  font-size: 15px;
+  padding: 5px 10px;
+}

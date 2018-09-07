@@ -1,9 +1,19 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, SimpleChanges, OnChanges } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  OnChanges
+} from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { AppService } from "../../../app.service";
 import { ProductModel } from "../product.model";
 import { FilterDto } from "../filter.dto";
-
+import { ClearCaractersPipe } from "../../../pipes/clear-caracters.pipe";
+import { ProductListService } from "./product-list.service";
 
 @Component({
   selector: "app-product-list",
@@ -21,6 +31,7 @@ export class ProductListComponent implements OnInit, OnChanges {
 
   @Input()
   filterDTO: FilterDto;
+
   @Output()
   productDTO = new EventEmitter<any>();
 
@@ -33,7 +44,14 @@ export class ProductListComponent implements OnInit, OnChanges {
   sort: MatSort;
   arrayData: Array<any>;
 
-  constructor(private appService: AppService) { }
+  constructor(
+    private appService: AppService,
+    private productListService: ProductListService
+  ) {
+    this.productListService.componentMethodCalled$.subscribe(action => {
+      this.getProducts(r => this.applyUserFiltersService(action, r));
+    });
+  }
 
   ngOnInit() {
     // Assign the data to the data source for the table to render
@@ -47,10 +65,11 @@ export class ProductListComponent implements OnInit, OnChanges {
   }
 
   /**
-   * método que se encarga de convertir el array de respuesta del servicio
-   * en datos para la tabla
+   * método que se encarga de convertir el array de respuesta del servicio en datos para la tabla
+   * @param data datos que se obtuvieron en la consulta
+   * @param cb callback que se encarga de aplicar filtros adicionales
    */
-  converDataToDataTable(data: any) {
+  converDataToDataTable(data: any, cb = null) {
     try {
       const localData = [];
       if (data.products.length > 0) {
@@ -61,18 +80,23 @@ export class ProductListComponent implements OnInit, OnChanges {
             if (this.subLevelId != element_.sublevel_id) {
               element_ = new ProductModel();
             }
+            if (cb != null && element_.id != null) {
+              element_ = cb(element_);
+            }
           }
-          localData.push(element_);
-          const arrayItem = {
-            col1: element_.id,
-            col2: element_.name,
-            col3: element_.quantity,
-            col4: element_.price,
-            col5: element_.sublevel_id,
-            col6: element_.available
-          };
-          if (arrayItem.col1 != null && arrayItem.col5 != null) {
-            this.arrayData.push(arrayItem);
+          if (element_.id != null) {
+            localData.push(element_);
+            const arrayItem = {
+              col1: element_.id,
+              col2: element_.name,
+              col3: element_.quantity,
+              col4: element_.price,
+              col5: element_.sublevel_id,
+              col6: element_.available
+            };
+            if (arrayItem.col1 != null && arrayItem.col5 != null) {
+              this.arrayData.push(arrayItem);
+            }
           }
         });
         this.dataSource = new MatTableDataSource(this.arrayData);
@@ -91,12 +115,13 @@ export class ProductListComponent implements OnInit, OnChanges {
 
   /**
    * método que se encarga de consultar los datos del archivo
+   * @param cb callback que ejecutará filtros adicionales sobre los registros obtenidos
    */
-  getProducts() {
+  getProducts(cb = null) {
     this.appService
       .doGet("./assets/data/products.json")
       .then((r: any) => {
-        this.converDataToDataTable(r);
+        this.converDataToDataTable(r, cb);
       })
       .catch(this.appService.doCatch);
   }
@@ -117,56 +142,95 @@ export class ProductListComponent implements OnInit, OnChanges {
         };
         this.productDTO.emit(productDTO);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
-  edit(item: ProductModel) {
+  /**
+   * método que se encarga de retornar el producto que cumpla con los filtros indicados
+   * @param changes cambios que vienen desde el dashboard y el componente filter
+   * @param response item a evaluar para que cumpla con los filtros
+   */
+  applyUserFilters(changes: SimpleChanges, response: ProductModel) {
+    let res = new ProductModel();
+    debugger;
     try {
+      if (changes.filterDTO != null && changes.filterDTO.currentValue != null) {
+        debugger;
+        const clearPrice = parseInt(
+          new ClearCaractersPipe().transform(response.price),
+          0
+        );
+        const curr = changes.filterDTO.currentValue;
+        if (curr.availity != null && response.available != curr.availity) {
+          return res;
+        }
+        if (curr.minValue != null && clearPrice <= curr.minValue) {
+          return res;
+        }
+        if (curr.maxValue != null && clearPrice >= curr.maxValue) {
+          return res;
+        }
+        //553, 698, 546 --- 700
+        if (curr.minQuantity != null && response.quantity <= curr.minQuantity) {
+          return res;
+        }
+        if (curr.maxQuantity != null && response.quantity >= curr.maxQuantity) {
+          return res;
+        }
 
+        res = response;
+      }
     } catch (error) {
       this.appService.doCatch(error);
     }
+    return res;
+  }
+
+  applyUserFiltersService(filterDTO: FilterDto, response: ProductModel) {
+    let res = new ProductModel();
+    debugger;
+    try {
+      if (filterDTO != null) {
+        debugger;
+        const clearPrice = parseInt(
+          new ClearCaractersPipe().transform(response.price),
+          0
+        );
+        const curr = filterDTO;
+        if (curr.availity != null && response.available != curr.availity) {
+          return res;
+        }
+        if (curr.minValue != null && clearPrice <= curr.minValue) {
+          return res;
+        }
+        if (curr.maxValue != null && clearPrice >= curr.maxValue) {
+          return res;
+        }
+        //553, 698, 546 --- 700
+        if (
+          curr.minQuantity != null &&
+          parseInt(response.quantity, 0) <= curr.minQuantity
+        ) {
+          return res;
+        }
+        if (
+          curr.maxQuantity != null &&
+          parseInt(response.quantity, 0) >= curr.maxQuantity
+        ) {
+          return res;
+        }
+
+        res = response;
+      }
+    } catch (error) {
+      this.appService.doCatch(error);
+    }
+    return res;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     try {
       console.log(changes);
-      this.arrayData = [];
-      if (
-        changes.filterDTO != null &&
-        changes.filterDTO.currentValue != null &&
-        changes.filterDTO.currentValue.availity != null
-      ) {
-        /* this.arrayData.forEach(element => {
-          if (element.col6 != changes.availity) {
-            element = {};
-          }
-        }); */
-
-        this.dataSource.filterPredicate = (data:
-          { col6: string }, filterValue: string) =>
-          data.col6.trim().toLowerCase().indexOf(filterValue) !== -1;
-      }
-      if (changes.minQuantity) {
-
-      }
-      if (changes.maxQuantity) {
-
-      }
-      if (changes.minValue) {
-
-      }
-      if (changes.maxValue) {
-
-      }
-      /* if (changes.accountName.currentValue.length > 0) {
-        this.accountNameSend = changes.accountName.currentValue;
-        this.reset();
-        this.active = true;
-        this.getSubAccounts();
-      } */
     } catch (error) {
       this.appService.doCatch(error);
     }
