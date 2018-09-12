@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class ProductListService {
   private componentMethodCallSource = new Subject<any>();
@@ -11,7 +11,7 @@ export class ProductListService {
   constructor() {}
 
   updateProductList(data) {
-    console.log("servicio");
+    console.log('servicio');
     this.componentMethodCallSource.next(data);
   }
 }

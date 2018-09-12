@@ -5,15 +5,15 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges
-} from "@angular/core";
-import { Input } from "@angular/core";
-import { AppService } from "./../../../app.service";
-import { CategoryModel } from "./../category.model";
+} from '@angular/core';
+import { Input } from '@angular/core';
+import { AppService } from './../../../app.service';
+import { CategoryModel } from './../category.model';
 
 @Component({
-  selector: "app-product-category",
-  templateUrl: "./product-category.component.html",
-  styleUrls: ["./product-category.component.css"]
+  selector: 'app-product-category',
+  templateUrl: './product-category.component.html',
+  styleUrls: ['./product-category.component.css']
 })
 export class ProductCategoryComponent implements OnInit, OnChanges {
   @Input()
@@ -27,10 +27,10 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
   placeholder: string;
   arrCategoryModel: Array<CategoryModel>;
 
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService) { }
 
   ngOnInit() {
-    this.placeholder = "Categoría";
+    this.placeholder = 'Categoría';
     this.auto = 0;
     this.arrCategoryModel = new Array<CategoryModel>();
     this.getCategories(r => this.validCategory(r));
@@ -45,7 +45,7 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
       if (this.categoryId == null) {
         this.arrCategoryModel = r.categories;
       } else {
-        this.placeholder = "Sub nivel";
+        this.placeholder = 'Sub nivel';
         this.arrCategoryModel = this.subLevelIn;
       }
     } catch (error) {
@@ -59,7 +59,7 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
    * o no presente la categoría
    */
   getCategories(cb) {
-    const url = "./assets/data/categories.json";
+    const url = './assets/data/categories.json';
     this.appService
       .doGet(url)
       .then((r: Array<CategoryModel>) => {
@@ -70,11 +70,11 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
 
   findSubLevels($event) {
     try {
-      const value_ = $event.value.split("-")[0];
+      const value_ = $event.value.split('-')[0];
       this.subLevelOut.emit({});
       let response = [];
       this.arrCategoryModel.forEach((element: CategoryModel) => {
-        if (value_ == element.id) {
+        if (value_ === element.id) {
           if (element.sublevels != null) {
             response = element.sublevels;
           }
@@ -107,7 +107,7 @@ export class ProductCategoryComponent implements OnInit, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     try {
-      //console.log(changes);
+      // console.log(changes);
       /* if (changes.accountName.currentValue.length > 0) {
         this.accountNameSend = changes.accountName.currentValue;
         this.reset();

@@ -1,11 +1,11 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: "avaibility"
+  name: 'avaibility'
 })
 export class AvaibilityPipe implements PipeTransform {
   transform(value: any, args?: any): any {
-    let response = "";
+    let response = '';
     if (value == null) {
       return value;
     } else {

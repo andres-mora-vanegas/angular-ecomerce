@@ -1,20 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
 import {
   Breakpoints,
   BreakpointState,
   BreakpointObserver
-} from "@angular/cdk/layout";
-import { CategoryModel } from "../../core/product/category.model";
-import { AppService } from "./../../app.service";
-import { ProductModel } from "../../core/product/product.model";
-import { SaleDto } from "../../core/sale/sale.dto";
-import { FilterDto } from "../../core/product/filter.dto";
+} from '@angular/cdk/layout';
+import { CategoryModel } from '../../core/product/category.model';
+import { AppService } from './../../app.service';
+import { ProductModel } from '../../core/product/product.model';
+import { SaleDto } from '../../core/sale/sale.dto';
+import { FilterDto } from '../../core/product/filter.dto';
 
 @Component({
-  selector: "app-shared/dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.css"]
+  selector: 'app-shared-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
   subLevels: Array<CategoryModel>;
@@ -119,8 +119,8 @@ export class DashboardComponent implements OnInit {
     try {
       if ($event.value) {
         const clearPrice = this.productSelected.price
-          .replace("$", "")
-          .replace(",", "");
+          .replace('$', '')
+          .replace(',', '');
         const numberPrice = parseInt(clearPrice, 0);
         this.amount = numberPrice * $event.value;
       }
@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
           };
           this.arrSaleDto.push(obj);
           this.appService.handleStorage(false, this.arrSaleDto);
-          this.appService.snack("Producto agregado correctamente");
+          this.appService.snack('Producto agregado correctamente');
           this.clearSelected();
         } else {
           this.notSelected = true;

@@ -6,17 +6,19 @@ import {
   Input,
   SimpleChanges,
   OnChanges
-} from "@angular/core";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { FilterDto } from "../filter.dto";
-import { AppService } from "../../../app.service";
-import { ProductListService } from "../product-list/product-list.service";
+} from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { FilterDto } from '../filter.dto';
+import { AppService } from '../../../app.service';
+import { ProductListService } from '../product-list/product-list.service';
 
 @Component({
-  selector: "app-product-filters",
-  templateUrl: "./product-filters.component.html",
-  styleUrls: ["./product-filters.component.css"]
+  selector: 'app-product-filters',
+  templateUrl: './product-filters.component.html',
+  styleUrls: ['./product-filters.component.css']
 })
+
+
 export class ProductFiltersComponent implements OnInit, OnChanges {
   options: FormGroup;
   filterDTO: FilterDto;
@@ -38,7 +40,7 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
   ) {
     /* this.options = fb.group({
       hideRequired: false,
-      floatLabel: "auto"
+      floatLabel: 'auto'
     }); */
   }
 
@@ -56,8 +58,8 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
 
   generateAvaility() {
     this.availity = [];
-    this.availity.push({ state: true, name: "Si" });
-    this.availity.push({ state: false, name: "No" });
+    this.availity.push({ state: true, name: 'Si' });
+    this.availity.push({ state: false, name: 'No' });
   }
 
   generateAmmounts() {
@@ -65,7 +67,7 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
       if (this.dataResult.length > 0) {
         this.dataResult.forEach(element => {
           if (element.price != null && element.quantity != null) {
-            const clearPrice = parseInt(element.price.replace(/\$|,/g, ""), 0);
+            const clearPrice = parseInt(element.price.replace(/\$|,/g, ''), 0);
             if (clearPrice < this.minValue) {
               this.minValue = clearPrice;
               /* this.filterDTO.minValue = clearPrice; */
@@ -92,10 +94,10 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
 
   doPost($event) {
     try {
-      console.log("emitiendo");
+      console.log('emitiendo');
       console.log(this.filterDTO);
       this.productListService.updateProductList(this.filterDTO);
-      //this.filterDtoOut.emit(this.filterDTO);
+      // this.filterDtoOut.emit(this.filterDTO);
     } catch (error) {
       this.appService.doCatch(error);
     }

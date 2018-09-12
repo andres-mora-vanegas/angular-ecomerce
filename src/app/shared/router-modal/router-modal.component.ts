@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { RouterModalService } from './router-modal.service';
-import { MaterializeAction } from 'angular2-materialize';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class RouterModalComponent implements OnInit {
 
-  modalActions = new EventEmitter<string | MaterializeAction>();
+
 
   constructor(
     private routerModalService: RouterModalService,
@@ -32,7 +31,7 @@ export class RouterModalComponent implements OnInit {
    */
   navigateAndModal(data) {
     this.router.navigate([{ outlets: { modal: [data] } }]);
-    this.modalActions.emit({ action: 'modal', params: ['open'] });
+
   }
 
   /**
@@ -40,7 +39,7 @@ export class RouterModalComponent implements OnInit {
    */
   closeModal() {
     this.router.navigate([{ outlets: { modal: null } }]);
-    this.modalActions.emit({ action: 'modal', params: ['close'] });
+
   }
 
 }

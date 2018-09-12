@@ -7,21 +7,21 @@ import {
   EventEmitter,
   SimpleChanges,
   OnChanges
-} from "@angular/core";
-import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
-import { AppService } from "../../../app.service";
-import { ProductModel } from "../product.model";
-import { FilterDto } from "../filter.dto";
-import { ClearCaractersPipe } from "../../../pipes/clear-caracters.pipe";
-import { ProductListService } from "./product-list.service";
+} from '@angular/core';
+import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { AppService } from '../../../app.service';
+import { ProductModel } from '../product.model';
+import { FilterDto } from '../filter.dto';
+import { ClearCaractersPipe } from '../../../pipes/clear-caracters.pipe';
+import { ProductListService } from './product-list.service';
 
 @Component({
-  selector: "app-product-list",
-  templateUrl: "./product-list.component.html",
-  styleUrls: ["./product-list.component.css"]
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit, OnChanges {
-  displayedColumns = ["col2", "col3", "col4", "col5", "col6"];
+  displayedColumns = ['col2', 'col3', 'col4', 'col5', 'col6'];
   dataSource: MatTableDataSource<any>;
 
   @Input()
@@ -77,7 +77,7 @@ export class ProductListComponent implements OnInit, OnChanges {
         data.products.forEach((element: ProductModel) => {
           let element_ = element;
           if (this.subLevelId != null && this.categoryId != null) {
-            if (this.subLevelId != element_.sublevel_id) {
+            if (this.subLevelId !== element_.sublevel_id) {
               element_ = new ProductModel();
             }
             if (cb != null && element_.id != null) {
@@ -106,7 +106,7 @@ export class ProductListComponent implements OnInit, OnChanges {
         }, 200);
         this.dataResult.emit(localData);
       } else {
-        console.log("No hay datos");
+        console.log('No hay datos');
       }
     } catch (error) {
       this.appService.doCatch(error);
@@ -119,7 +119,7 @@ export class ProductListComponent implements OnInit, OnChanges {
    */
   getProducts(cb = null) {
     this.appService
-      .doGet("./assets/data/products.json")
+      .doGet('./assets/data/products.json')
       .then((r: any) => {
         this.converDataToDataTable(r, cb);
       })
@@ -152,16 +152,14 @@ export class ProductListComponent implements OnInit, OnChanges {
    */
   applyUserFilters(changes: SimpleChanges, response: ProductModel) {
     let res = new ProductModel();
-    debugger;
     try {
       if (changes.filterDTO != null && changes.filterDTO.currentValue != null) {
-        debugger;
         const clearPrice = parseInt(
           new ClearCaractersPipe().transform(response.price),
           0
         );
         const curr = changes.filterDTO.currentValue;
-        if (curr.availity != null && response.available != curr.availity) {
+        if (curr.availity != null && response.available !== curr.availity) {
           return res;
         }
         if (curr.minValue != null && clearPrice <= curr.minValue) {
@@ -170,7 +168,7 @@ export class ProductListComponent implements OnInit, OnChanges {
         if (curr.maxValue != null && clearPrice >= curr.maxValue) {
           return res;
         }
-        //553, 698, 546 --- 700
+        // 553, 698, 546 --- 700
         if (curr.minQuantity != null && response.quantity <= curr.minQuantity) {
           return res;
         }
@@ -188,16 +186,14 @@ export class ProductListComponent implements OnInit, OnChanges {
 
   applyUserFiltersService(filterDTO: FilterDto, response: ProductModel) {
     let res = new ProductModel();
-    debugger;
     try {
       if (filterDTO != null) {
-        debugger;
         const clearPrice = parseInt(
           new ClearCaractersPipe().transform(response.price),
           0
         );
         const curr = filterDTO;
-        if (curr.availity != null && response.available != curr.availity) {
+        if (curr.availity != null && response.available !== curr.availity) {
           return res;
         }
         if (curr.minValue != null && clearPrice <= curr.minValue) {
@@ -206,7 +202,7 @@ export class ProductListComponent implements OnInit, OnChanges {
         if (curr.maxValue != null && clearPrice >= curr.maxValue) {
           return res;
         }
-        //553, 698, 546 --- 700
+        // 553, 698, 546 --- 700
         if (
           curr.minQuantity != null &&
           parseInt(response.quantity, 0) <= curr.minQuantity
@@ -239,8 +235,7 @@ export class ProductListComponent implements OnInit, OnChanges {
   edit() {
     try {
 
-    }
-    catch (error) {
+    } catch (error) {
       this.appService.doCatch(error);
     }
 

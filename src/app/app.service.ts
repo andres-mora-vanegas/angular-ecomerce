@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { HttpClientModule, HttpClient } from "@angular/common/http";
-import { SaleDto } from "./core/sale/sale.dto";
-import { MatSnackBar } from "@angular/material";
+import { Injectable } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { SaleDto } from './core/sale/sale.dto';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AppService {
   constructor(private http: HttpClient,    private snackBar: MatSnackBar
@@ -27,15 +27,15 @@ export class AppService {
       /**
        * si se están guardando datos
        */
-      if (init == false) {
+      if (init === false) {
         const jsonifyCart = JSON.stringify(arrSaleDto);
-        localStorage.setItem("products", jsonifyCart);
+        localStorage.setItem('products', jsonifyCart);
       } else {
         /**
          * si se van a consultar los articulos ya guardados en el storage
          */
-        if (localStorage.getItem("products")) {
-          const previusData = localStorage.getItem("products");
+        if (localStorage.getItem('products')) {
+          const previusData = localStorage.getItem('products');
           const jsonifyCart = JSON.parse(previusData);
           arrSaleDto = jsonifyCart;
         }
