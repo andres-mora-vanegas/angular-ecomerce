@@ -25,6 +25,7 @@ export class ProductFiltersComponent implements OnInit, OnChanges {
   minQuantity: number;
   maxQuantity: number;
   quantitys: Array<number>;
+  vertical: boolean;
   @Input()
   dataResult: Array<any>;
   @Output()
