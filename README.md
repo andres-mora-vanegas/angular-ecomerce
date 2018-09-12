@@ -25,3 +25,14 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## install angular template
+
+```javascript
+npm install --save @angular/material @angular/cdk
+ng add @angular/material
+ng g @angular/material:material-nav --name shared/mynav
+ng g @angular/material:material-dashboard --name shared/dashboard
+ng g module routing
+ng g s app
+```
