@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MynavComponent } from './shared/mynav/mynav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { ProductListComponent } from './core/product/product-list/product-list.component';
 import { ProductComponent } from './core/product/product/product.component';
 import { HomeComponent } from './shared/home/home.component';
@@ -18,30 +17,37 @@ import { ProductCategoryComponent } from './core/product/product-category/produc
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModalComponent } from './shared/router-modal/router-modal.component';
 import { RouterModalService } from './shared/router-modal/router-modal.service';
-import { SaleDetailComponent } from './core/sale/sale-detail/sale-detail.component';
+
 import { ToNumberPipe } from './pipes/to-number.pipe';
 import { ProductFiltersComponent } from './core/product/product-filters/product-filters.component';
 import { ClearCaractersPipe } from './pipes/clear-caracters.pipe';
 
-import { NoticeComponent } from './core/sale/notice/notice.component';
+
 import { ProductListService } from './core/product/product-list/product-list.service';
+import { VehicleListComponent } from './core/vehicle/vehicle-list/vehicle-list.component';
+import { SearchComponent } from './core/search/search/search.component';
+import { ClientComponent } from './core/client/client/client.component';
+import { ClientListComponent } from './core/client/client-list/client-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MynavComponent,
-    DashboardComponent,
+    MynavComponent,    
     ProductListComponent,
     ProductComponent,
     HomeComponent,
     AvaibilityPipe,
     ProductCategoryComponent,
     RouterModalComponent,
-    SaleDetailComponent,
+    
     ToNumberPipe,
     ProductFiltersComponent,
     ClearCaractersPipe,
-    NoticeComponent
+    
+    VehicleListComponent,
+    SearchComponent,
+    ClientComponent,
+    ClientListComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,94 @@
+<div class="avaible container" *ngIf="arrayData!=null && arrayData.length>0">
+  <h2 >Vehículos disponibles</h2>
+
+  <div class="example-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+    </mat-form-field>
+  </div>
+  <div class="example-container mat-elevation-z8" *ngIf="dataSource!=null">
+
+    <mat-table [dataSource]="dataSource" matSort matSortActive="col1" matSortDirection="desc" #table>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+
+      <ng-container matColumnDef="col1">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">Id</span>
+          <div class="rightInfo">
+            {{row.col1}}
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="col2">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Placa </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">Placa</span>
+          <div class="rightInfo">
+            <!-- <a href="#" *ngIf="row.col6 && subLevelId!=null && categoryId!=null" (click)="chooseProduct(row);false" matTooltip="Agregar producto a la compra"
+              aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</a>
+            <a href="#" *ngIf="subLevelId==null && categoryId==null" (click)="edit(row);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</a> -->
+            <!-- <span *ngIf="!row.col6 && subLevelId!=null && categoryId!=null" matTooltip="El producto no está disponible" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</span> -->
+            {{row.col2}}
+          </div>
+        </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="col3">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Ciudad</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">Ciudad</span>
+          <div class="rightInfo">{{row.col3}}</div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="col4">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>País</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">País</span>
+          <div class="rightInfo">{{row.col4}}</div>
+        </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="col5">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Marca </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">Marca</span>
+          <div class="rightInfo left-align" [innerHTML]="row.col5"></div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="col6">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Logo </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">Logo</span>
+          <div class="rightInfo left-align">
+            <img src="{{row.col6}}" alt="logo" />
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="col7">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="mobile-label">Tipo</span>
+          <div class="rightInfo left-align" >{{row.col7}}</div>
+        </mat-cell>
+      </ng-container>
+
+
+
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[25, 100]"></mat-paginator>
+    {{filterDTO|json}}
+  </div>
+</div>
+<div class="not-found" *ngIf="arrayData!=null && arrayData.length<1">
+  <h2>No se encontró ningún resultado</h2>
+  <img src="./assets/img/not-found.jpg" alt="">
+</div>

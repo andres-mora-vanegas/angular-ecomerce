@@ -1,0 +1,54 @@
+<div class="container ">
+  <mat-card>
+    <div class="col s12 ">
+      <h1>{{title}} de cliente</h1>
+    </div>
+    <form action="" class="card-panel row" (submit)="doPost($event)">
+      <div class="col s12 m6">
+        <mat-form-field>
+          <input matInput name="name" placeholder="Nombres" [(ngModel)]="client.first_name">
+        </mat-form-field>
+      </div>
+      <div class="col s12 m6">
+        <mat-form-field>
+          <input matInput name="lastName" placeholder="Apellidos" [(ngModel)]="client.last_name">
+        </mat-form-field>
+      </div>
+      <div class="col s12 m6">
+        <mat-form-field>
+          <input matInput name="email" placeholder="Email" [(ngModel)]="client.email">
+        </mat-form-field>
+      </div>
+      <div class="col s12 m6">
+        <mat-form-field>
+          <input matInput name="identification" placeholder="Identificación" [(ngModel)]="client.identification">
+        </mat-form-field>
+      </div>
+      <div class="col s12 m6">
+        <!-- <mat-form-field>
+          <input matInput name="docuento" placeholder="Documento" [(ngModel)]="client.scanned_identification">
+        </mat-form-field> -->
+
+        <input #file type="file" [hidden]="true" accept="image/*" (change)="upload(file.files)">
+        <button mat-button #upload (click)="file.click()">Upload file</button>
+      </div>
+      <div class="col s12 m6" *ngIf="client.id">
+        <mat-form-field *ngIf="client.state">
+          <mat-select name="state" placeholder="Estado" [(value)]="client.state.id">
+            <mat-option *ngFor="let state of states" [value]="state.id">{{state.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- <div class="col s12 m6" >
+      <mat-form-field >
+        <mat-select name="rol" placeholder="Perfil"  >
+          <mat-option *ngFor="let rol of rols" [value]="rol.rolId">{{rol.rolName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> -->
+      <div class="col s12 m6 offset-m3 center-align">
+        <button mat-raised-button color="primary">{{action}}</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

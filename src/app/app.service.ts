@@ -1,56 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { SaleDto } from './core/sale/sale.dto';
 import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
-  constructor(private http: HttpClient,    private snackBar: MatSnackBar
-  ) {}
+
+  BASE: string;
+
+  constructor(private http: HttpClient, private snackBar: MatSnackBar
+  ) {
+    this.BASE = 'http://localhost:50000/';
+  }
 
   /**
    * método que se encarga de consultar vía get un api
    * @param url url que consultará la petición http
    */
   doGet(url) {
+
+    url = this.BASE + url;
     return this.http.get(url).toPromise();
   }
 
-  /**
-   * método que se encarga de guardar el array en el localStorage
-   * @param init parametro que indica si el componente se carga por primera vez.
-   */
-  handleStorage(init = false, arrSaleDto: Array<SaleDto>) {
-    try {
-      /**
-       * si se están guardando datos
-       */
-      if (init === false) {
-        const jsonifyCart = JSON.stringify(arrSaleDto);
-        localStorage.setItem('products', jsonifyCart);
-      } else {
-        /**
-         * si se van a consultar los articulos ya guardados en el storage
-         */
-        if (localStorage.getItem('products')) {
-          const previusData = localStorage.getItem('products');
-          const jsonifyCart = JSON.parse(previusData);
-          arrSaleDto = jsonifyCart;
-        }
-      }
-    } catch (error) {
-      this.doCatch(error);
-    }
-    return arrSaleDto;
+  doPost(url, data) {
+
+    url = this.BASE + url;
+    return this.http.post(url, data).toPromise();
   }
+
+
 
   /**
    * método que se encarga de manejar los errores de toda la aplicación
    * @param error error que se recibe
    */
   doCatch(error) {
+    console.log(error);
+  }
+
+  handleError(error) {
     console.log(error);
   }
 
@@ -70,5 +60,9 @@ export class AppService {
       message = JSON.stringify(message);
     }
     this.snackBar.open(message, action, options);
+  }
+
+  public doModal(message: any) {
+    console.log(message);
   }
 }
