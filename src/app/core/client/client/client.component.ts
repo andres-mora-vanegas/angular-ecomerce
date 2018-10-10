@@ -24,6 +24,9 @@ export class ClientComponent implements OnInit {
   response: any;
   modal: ModalModel;
   title: string;
+  uploadFile: any;
+
+  addVehicleToggle: boolean;
 
   constructor(
     private appService: AppService,
@@ -71,13 +74,25 @@ export class ClientComponent implements OnInit {
       });
   }
 
+  upload($event) {
+    console.log(event);
+    this.uploadFile = <File>$event.target.files[0];
+  }
+
   /**
    * método que se encarga de guardar el registro.
    */
   doPost(event) {
     event.preventDefault();
     if (this.minimumData()) {
-      this.appService.doPost('client', this.client)
+      const fd = new FormData();
+
+      fd.append('scanned_identification', this.uploadFile, this.uploadFile.name);
+      fd.append('first_name', this.client.first_name);
+      fd.append('last_name', this.client.last_name);
+      fd.append('email', this.client.email);
+      fd.append('identification', this.client.identification);
+      this.appService.doPost('client', fd)
         .then((response: any) => {
           this.validResponse(response);
         }).catch(e => this.appService.doCatch(e));
@@ -94,9 +109,11 @@ export class ClientComponent implements OnInit {
     return true;
   }
 
-  upload(event) {
-    console.log(event);
+  addVehicle(client: ClientModel) {
+    this.addVehicleToggle = true;
   }
+
+
 
   validResponse(response: GeneralResponseDTO) {
     this.response = response;

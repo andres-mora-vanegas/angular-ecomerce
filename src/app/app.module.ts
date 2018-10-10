@@ -28,26 +28,30 @@ import { VehicleListComponent } from './core/vehicle/vehicle-list/vehicle-list.c
 import { SearchComponent } from './core/search/search/search.component';
 import { ClientComponent } from './core/client/client/client.component';
 import { ClientListComponent } from './core/client/client-list/client-list.component';
+import { CsvComponent } from './shared/csv/csv/csv.component';
+import { VehicleUserAddComponent } from './core/vehicle/vehicle-user-add/vehicle-user-add.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MynavComponent,    
+    MynavComponent,
     ProductListComponent,
     ProductComponent,
     HomeComponent,
     AvaibilityPipe,
     ProductCategoryComponent,
     RouterModalComponent,
-    
+
     ToNumberPipe,
     ProductFiltersComponent,
     ClearCaractersPipe,
-    
+
     VehicleListComponent,
     SearchComponent,
     ClientComponent,
-    ClientListComponent
+    ClientListComponent,
+    CsvComponent,
+    VehicleUserAddComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,7 @@ import { ClientListComponent } from './core/client/client-list/client-list.compo
   providers: [
     AppService,
     RouterModalService,
-    ProductListService
+    ProductListService,
   ],
   bootstrap: [AppComponent]
 })

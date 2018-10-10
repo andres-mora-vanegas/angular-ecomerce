@@ -6,7 +6,7 @@ export class ClientModel {
     public first_name: string;
     public last_name: string;
     public identification: string;
-    public scanned_identification: string;
+    public scanned_identification: File;
     public created: string;
     public modified: string;
     public state: StateModel;

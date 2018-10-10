@@ -1,10 +1,16 @@
 <div class="avaible container" *ngIf="arrayData!=null && arrayData.length>0">
-  <h2 >Vehículos disponibles</h2>
+  <h2 >Vehículos disponibles <span *ngIf="clientId">de {{clientId.first_name}} {{clientId.last_name}}</span></h2>
 
-  <div class="example-header">
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-    </mat-form-field>
+  <div class="example-header row">
+    <div class="col s6">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+          </mat-form-field>
+    </div>
+    <div class="col s6" *ngIf="!clientId">
+      <button mat-raised-button color="primary"  (click)="getCSVDownloadLink()">Generar CSV</button>
+    </div>
+    
   </div>
   <div class="example-container mat-elevation-z8" *ngIf="dataSource!=null">
 

@@ -8,10 +8,12 @@ import { MatSnackBar } from '@angular/material';
 export class AppService {
 
   BASE: string;
+  GENERAL_MESSAGE: string;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar
   ) {
-    this.BASE = 'http://localhost:50000/';
+    this.BASE = 'http://192.168.0.6:8000/';
+    this.GENERAL_MESSAGE = 'Se presentó un error inesperado ';
   }
 
   /**
@@ -38,6 +40,7 @@ export class AppService {
    */
   doCatch(error) {
     console.log(error);
+    this.snack(this.GENERAL_MESSAGE + JSON.stringify(error.error));
   }
 
   handleError(error) {
