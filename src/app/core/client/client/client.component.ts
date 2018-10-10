@@ -16,6 +16,7 @@ import { GeneralResponseDTO } from '../../../shared/generarResponse/general-resp
 export class ClientComponent implements OnInit {
   client: ClientModel;
   states: Array<StateModel>;
+  DATA_PENDING: string;
 
   action: any;
   training: FormGroup;
@@ -25,8 +26,10 @@ export class ClientComponent implements OnInit {
   modal: ModalModel;
   title: string;
   uploadFile: any;
+  vehicleList: boolean;
 
   addVehicleToggle: boolean;
+
 
   constructor(
     private appService: AppService,
@@ -37,6 +40,7 @@ export class ClientComponent implements OnInit {
       this.path = params['id'];
       this.reset();
     });
+    this.DATA_PENDING = 'Faltan datos por registrar';
   }
 
   reset() {
@@ -46,13 +50,14 @@ export class ClientComponent implements OnInit {
     this.client.state = new StateModel();
     this.modal = new ModalModel();
     const regNumber = /\d/;
-    this.getStates();
     this.getVehicles();
     if (regNumber.test(this.path)) {
+      this.getStates();
       this.path = `client?id=${this.path}`;
       this.find();
       this.action = 'Guardar cambios';
       this.title = 'Edición';
+      this.vehicleList = true;
     } else {
       this.path = 'new';
       this.action = this.title = 'Creación';
@@ -75,7 +80,6 @@ export class ClientComponent implements OnInit {
   }
 
   upload($event) {
-    console.log(event);
     this.uploadFile = <File>$event.target.files[0];
   }
 
@@ -92,21 +96,38 @@ export class ClientComponent implements OnInit {
       fd.append('last_name', this.client.last_name);
       fd.append('email', this.client.email);
       fd.append('identification', this.client.identification);
-      this.appService.doPost('client', fd)
+      if (this.client.id != null) {
+        fd.append('id', this.client.id.toString());
+      }
+      this.appService.doPost('client/', fd)
         .then((response: any) => {
           this.validResponse(response);
         }).catch(e => this.appService.doCatch(e));
-
-
+    } else {
+      this.appService.snack(this.DATA_PENDING);
     }
   }
 
-  minimumData() {
-    /* let answer = false;
-    if () {
+  /**
+   * método que recibe el cierre del modal desde el elemento hijo
+   * @param $event boolean que determina el estado del modal, true open, false close
+   */
+  closeModal($event) {
+    this.addVehicleToggle = $event;
+  }
 
-    } */
-    return true;
+  minimumData() {
+    let answer = false;
+    if (
+      this.uploadFile != null &&
+      this.client.first_name != null && this.client.first_name != '' &&
+      this.client.last_name != null && this.client.last_name != '' &&
+      this.client.email != null && this.client.email != '' &&
+      this.client.identification != null && this.client.identification != ''
+    ) {
+      answer = true;
+    }
+    return answer;
   }
 
   addVehicle(client: ClientModel) {
@@ -115,25 +136,26 @@ export class ClientComponent implements OnInit {
 
 
 
-  validResponse(response: GeneralResponseDTO) {
+  validResponse(response: any) {
     this.response = response;
     this.modal.body = response.message;
-    if (response.state == true) {
+    let responseMessage = '';
+    if (response.id) {
       this.reset();
-      this.modal.body = response.message;
+      responseMessage = 'Usuario registrado correctamente';
+    } else if (response.state != null && response.state == false) {
+      responseMessage = response.message;
     }
-    this.appService.doModal(this.modal);
+    this.appService.snack(responseMessage);
   }
 
   ngOnInit() {
   }
 
   getStates() {
-    // this.validPath();
     this.appService.doGet('states')
       .then((response: any) => {
         this.states = response.results;
-
       }).catch(e => {
         this.appService.doCatch(e);
       });
@@ -155,6 +177,14 @@ export class ClientComponent implements OnInit {
       this.appService.doCatch(error);
     }
 
+  }
+
+  isCreated($event) {
+    if ($event == true) {
+      this.vehicleList = false;
+      this.vehicleList = true;
+      this.addVehicleToggle = false;
+    }
   }
 
 }

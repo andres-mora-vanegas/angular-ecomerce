@@ -12,7 +12,7 @@ export class AppService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar
   ) {
-    this.BASE = 'http://192.168.0.6:8000/';
+    this.BASE = 'http://localhost:50000/';
     this.GENERAL_MESSAGE = 'Se presentó un error inesperado ';
   }
 
@@ -32,6 +32,12 @@ export class AppService {
     return this.http.post(url, data).toPromise();
   }
 
+  doPut(url, data) {
+
+    url = this.BASE + url;
+    return this.http.put(url, data).toPromise();
+  }
+
 
 
   /**
@@ -39,8 +45,14 @@ export class AppService {
    * @param error error que se recibe
    */
   doCatch(error) {
-    console.log(error);
-    this.snack(this.GENERAL_MESSAGE + JSON.stringify(error.error));
+    try {
+      console.log(error);
+      const detailMessage = (error.error != null) ? JSON.stringify(error.error) : error.message;
+      this.snack(this.GENERAL_MESSAGE + detailMessage);
+    } catch (error_) {
+      console.log(error_);
+    }
+
   }
 
   handleError(error) {
@@ -52,7 +64,7 @@ export class AppService {
    * @param message string que contiene el mensaje
    * @param action
    */
-  public snack(message, action = null) {
+  public snack(message, action = null, delay = null) {
     let options = {};
     if (action == null) {
       options = {
@@ -62,7 +74,11 @@ export class AppService {
     if (message instanceof Object) {
       message = JSON.stringify(message);
     }
-    this.snackBar.open(message, action, options);
+    delay = (delay != null) ? delay : 0;
+    setTimeout(() => {
+      this.snackBar.open(message, action, options);
+    }, delay);
+    
   }
 
   public doModal(message: any) {

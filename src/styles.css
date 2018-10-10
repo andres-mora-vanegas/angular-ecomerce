@@ -65,7 +65,8 @@ estilos para el modal
   display: block;
   position: fixed;
   min-height: 400px;
-  height: auto;
+  height: 50px;
+  overflow: auto;
 }
 
 /**

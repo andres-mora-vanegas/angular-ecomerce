@@ -29,9 +29,8 @@
         <!-- <mat-form-field>
           <input matInput name="docuento" placeholder="Documento" [(ngModel)]="client.scanned_identification">
         </mat-form-field> -->
-
-        <input #file type="file" accept="image/*" (change)="upload($event)">
-        <!-- <a mat-raised-button  #upload (click)="file.click()">Elegír documento escaneado</a> -->
+        <input style="display:none" #file type="file" accept="image/*" (change)="upload($event)">
+        <a mat-raised-button  #upload (click)="file.click()">Elegír documento escaneado</a>
       </div>
       <div class="col s12 m6" *ngIf="client.id">
         <mat-form-field *ngIf="client.state">
@@ -40,29 +39,21 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <!-- <div class="col s12 m6" >
-      <mat-form-field >
-        <mat-select name="rol" placeholder="Perfil"  >
-          <mat-option *ngFor="let rol of rols" [value]="rol.rolId">{{rol.rolName}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div> -->
       <div class="col s12 m6 offset-m3 center-align">
-        <button mat-raised-button color="primary">{{action}}</button>
+        <p>
+          <button mat-raised-button color="primary">{{action}}</button>
+        </p>
       </div>
       <div class="col s12 m6 offset-m3 center-align" *ngIf="client.id">
         <p>
-            <a mat-raised-button color="warn" (click)="addVehicle(client)"
-            matTooltip="Agregar vehículo"
-                aria-label="Button that displays a tooltip when focused or hovered over"
-            >
-                <mat-icon>commute</mat-icon>
-            </a>
+          <a mat-raised-button color="warn" (click)="addVehicle(client)" matTooltip="Agregar vehículo" aria-label="Button that displays a tooltip when focused or hovered over">
+            <mat-icon>commute</mat-icon>
+          </a>
         </p>
-        
       </div>
     </form>
   </mat-card>
-  <app-vehicle-list *ngIf="client.id" [clientId]="client"></app-vehicle-list>
-  <app-vehicle-user-add  [clientId]="client" [modal]="addVehicleToggle" ></app-vehicle-user-add>
+  <app-vehicle-list *ngIf="client.id && vehicleList" [clientId]="client"></app-vehicle-list>
+  <app-vehicle-user-add *ngIf="client.id && addVehicleToggle" [clientId]="client" [modal]="addVehicleToggle"
+    (closeModal)="closeModal()" (created)="isCreated($event)"></app-vehicle-user-add>
 </div>
