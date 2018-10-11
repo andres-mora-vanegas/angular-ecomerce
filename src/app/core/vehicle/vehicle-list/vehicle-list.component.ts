@@ -93,13 +93,14 @@ export class VehicleListComponent implements OnInit {
             if (element.vehicle != null) {
               element_ = element_.vehicle;
             }
+            const backendImage = this.apibase + element_.brand.image;
             const arrayItem = {
               col1: element_.id,
               col2: element_.enrollment,
               col3: element_.city.name,
               col4: element_.city.country.name,
               col5: element_.brand.name,
-              col6: element_.brand.image,
+              col6: backendImage,
               col7: element_.kind.name
             };
 
@@ -192,11 +193,21 @@ export class VehicleListComponent implements OnInit {
    * @param vehicle elemento tipo tabla de datos
    */
   selectVehicle(vehicle) {
+    let indexOfVehicle = 0;
+    let flagFromUser = false;
+    if (this.clientId == null) {
+      indexOfVehicle = this.arrVehicleDTO.findIndex(x => x.id === vehicle.col1);
+    } else {
+      flagFromUser = true;
+      indexOfVehicle = this.arrVehicleDTO.findIndex(x => x.vehicle.id === vehicle.col1);
+    }
 
-    const indexOfVehicle = this.arrVehicleDTO.findIndex(x => x.id === vehicle.col1);
     if (indexOfVehicle >= 0) {
       const vehicleDTO = new VehicleDTO();
-      const tempData = this.arrVehicleDTO[indexOfVehicle];
+      let tempData = this.arrVehicleDTO[indexOfVehicle];
+      if (flagFromUser) {
+        tempData = this.arrVehicleDTO[indexOfVehicle].vehicle;
+      }
       vehicleDTO.id = tempData.id;
       vehicleDTO.city = tempData.city;
       vehicleDTO.brand = tempData.brand;
@@ -206,6 +217,7 @@ export class VehicleListComponent implements OnInit {
       this.client = true;
       this.addVehicleToggle = true;
     }
+    return false;
   }
 
   /**

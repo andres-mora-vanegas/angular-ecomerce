@@ -34,7 +34,7 @@
         <mat-cell *matCellDef="let row">
           <span class="mobile-label">Placa</span>
           <div class="rightInfo">            
-            <a href="#" (click)="selectVehicle(row);false">{{row.col2}}</a>            
+            <a style="cursor:pointer" (click)="selectVehicle(row)">{{row.col2}}</a>            
           </div>
         </mat-cell>
       </ng-container>
@@ -70,7 +70,7 @@
         <mat-cell *matCellDef="let row">
           <span class="mobile-label">Logo</span>
           <div class="rightInfo left-align">
-            <img style="width:40px" src="{{apibase}}{{row.col6}}" alt="logo" />
+            <img style="width:40px" src="{{row.col6}}" alt="logo" />
           </div>
         </mat-cell>
       </ng-container>
