@@ -32,6 +32,7 @@ export class VehicleListComponent implements OnInit {
   arrayData: Array<any>;
   arrVehicleDTO: Array<any>;
   path: any;
+  apibase: any;
 
   addVehicleToggle: boolean;
   client: boolean;
@@ -44,23 +45,27 @@ export class VehicleListComponent implements OnInit {
   ) {
     this.route.params.forEach(params => {
       this.path = params['id'];
-      this.reset();
+      this.ngOnInit();
     });
   }
 
   ngOnInit() {
     // Assign the data to the data source for the table to render   
+    this.reset();
   }
 
 
   reset() {
+    console.log(this.clientId);
     const regNumber = /\d/;
-    if (regNumber.test(this.path)) {
+    if (regNumber.test(this.path) && this.clientId == null) {
       this.path = `vehicle?brand=${this.path}`;
     } else {
       this.path = 'vehicle';
     }
     this.getVehicles();
+    const str = this.appService.doGetApiUrl();
+    this.apibase = str.substring(0, str.length - 1);
   }
 
   applyFilter(filterValue: string) {

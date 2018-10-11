@@ -25,10 +25,11 @@
           <input matInput name="identification" placeholder="Identificación" [(ngModel)]="client.identification">
         </mat-form-field>
       </div>
-      <div class="col s12 m6">
+      <div class="col s12 m6 offset-m3">
         <!-- <mat-form-field>
           <input matInput name="docuento" placeholder="Documento" [(ngModel)]="client.scanned_identification">
         </mat-form-field> -->
+        <p style="text-align:center">Documento de identificación escaneado</p>
         <input #file type="file" accept="image/*" (change)="upload($event)">
         <!-- <a mat-raised-button  #upload (click)="file.click()">Elegír documento escaneado</a> -->
       </div>

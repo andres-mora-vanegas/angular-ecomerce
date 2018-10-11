@@ -10,7 +10,7 @@ import { ClientModel } from '../client.model';
 })
 export class ClientListComponent implements OnInit {
 
-  displayedColumns = ['col2', 'col3', 'col4', 'col5', 'col6'];
+  displayedColumns = ['col2', 'col3', 'col4', 'col5', ];
   dataSource: MatTableDataSource<any>;
 
   @Input()
@@ -81,7 +81,7 @@ export class ClientListComponent implements OnInit {
               col3: element_.email,
               col4: element_.scanned_identification,
               col5: element_.identification,
-              col6: element_.created
+              // col6: element_.created
             };
             if (arrayItem.col1 != null && arrayItem.col5 != null) {
               this.arrayData.push(arrayItem);

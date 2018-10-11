@@ -30,7 +30,6 @@ import { ClientListComponent } from './core/client/client-list/client-list.compo
 import { CsvComponent } from './shared/csv/csv/csv.component';
 import { VehicleComponent } from './core/vehicle/vehicle/vehicle.component';
 import { BrandComponent } from './core/brand/brand/brand.component';
-import { VehicleEditComponent } from './core/vehicle/vehicle-edit/vehicle-edit.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { VehicleEditComponent } from './core/vehicle/vehicle-edit/vehicle-edit.c
     CsvComponent,
     VehicleComponent,
     BrandComponent,
-    VehicleEditComponent
   ],
   imports: [
     BrowserModule,
