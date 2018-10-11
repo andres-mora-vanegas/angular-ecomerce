@@ -39,6 +39,7 @@
             <a href="#" *ngIf="subLevelId==null && categoryId==null" (click)="edit(row);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</a> -->
             <!-- <span *ngIf="!row.col6 && subLevelId!=null && categoryId!=null" matTooltip="El producto no está disponible" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</span> -->
             <a href="#" (click)="selectVehicle(row);false">{{row.col2}}</a>
+            <!--<a routerLink="/vehicle-detail/{{row.col1}}">{{row.col2}}</a>-->
           </div>
         </mat-cell>
       </ng-container>

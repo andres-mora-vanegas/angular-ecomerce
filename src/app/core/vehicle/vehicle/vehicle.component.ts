@@ -63,11 +63,14 @@ export class VehicleComponent implements OnInit {
     this.arrKind = new Array<KindModel>();
     this.clientVehicleDTO = new ClientVehicleDTO();
     this.clientVehicleDTO.vehicle = new VehicleDTO();
+    this.clientVehicleDTO.vehicle.city = new CityModel();
+    this.clientVehicleDTO.vehicle.brand = new BrandModel();
+    this.clientVehicleDTO.vehicle.kind = new KindModel();
     this.clientVehicleDTO.client = new ClientModel();
     this.getCitys();
     this.getBrands();
     this.getKinds();
-    //this.validVehicleCall();
+    this.validVehicleCall();
   }
 
   /**
@@ -123,7 +126,6 @@ export class VehicleComponent implements OnInit {
   validMinimumData() {
     try {
       let errors = 0;
-      console.log(this.clientVehicleDTO);
       if (this.clientVehicleDTO.vehicle.enrollment == null) {
         this.appService.snack('No se ha registrado toda la información');
         errors++;
@@ -151,9 +153,14 @@ export class VehicleComponent implements OnInit {
 
   addClientVehicle() {
     const url = (this.vehicleId == null) ? 'manageVehicle/enroll' : 'vehicle/';
-    console.log(this.clientVehicleDTO);
+    let data = {};
+    if (/vehicle\//.test(url)) {
+      data = this.clientVehicleDTO.vehicle;
+    } else {
+      data = this.clientVehicleDTO;
+    }
     this.appService
-      .doPost(url, this.clientVehicleDTO)
+      .doPost(url, data)
       .then((r: GeneralResponseDTO) => {
         this.validResponse(r);
       })
@@ -179,6 +186,20 @@ export class VehicleComponent implements OnInit {
     } catch (error) {
       this.appService.doCatch(error);
     }
+  }
+
+  changeCity($event) {
+    const idOfChoosed = this.arrCity.findIndex(x => x.id === $event.value);
+    this.clientVehicleDTO.vehicle.city = this.arrCity[idOfChoosed];
+  }
+
+  changeBrand($event) {
+    const idOfChoosed = this.arrBrand.findIndex(x => x.id === $event.value);
+    this.clientVehicleDTO.vehicle.brand = this.arrBrand[idOfChoosed];
+  }
+  changeKind($event) {
+    const idOfChoosed = this.arrKind.findIndex(x => x.id === $event.value);
+    this.clientVehicleDTO.vehicle.kind = this.arrKind[idOfChoosed];
   }
 
 }

@@ -53,8 +53,7 @@ export class ClientComponent implements OnInit {
     this.getVehicles();
     if (regNumber.test(this.path)) {
       this.getStates();
-      this.path = `client?id=${this.path}`;
-      this.find();
+      this.find(`client?id=${this.path}`);
       this.action = 'Guardar cambios';
       this.title = 'Edición';
       this.vehicleList = true;
@@ -65,8 +64,8 @@ export class ClientComponent implements OnInit {
 
   }
 
-  find() {
-    this.appService.doGet(this.path)
+  find(url) {
+    this.appService.doGet(url)
       .then((response: any) => {
         let res = response;
         if (res.length > 0) {
@@ -80,8 +79,15 @@ export class ClientComponent implements OnInit {
   }
 
   upload($event) {
-    // this.uploadFile = <File>$event.target.files[0];
-    // this.uploadFile = $event.target.files[0];
+    try {
+      this.uploadFile = <File>$event.target.files[0];
+      this.uploadFile = $event.target.files[0];
+    }
+    catch (error) {
+      this.appService.doCatch(error);
+    }
+
+
   }
 
   /**
@@ -142,7 +148,8 @@ export class ClientComponent implements OnInit {
     this.modal.body = response.message;
     let responseMessage = '';
     if (response.id) {
-      this.reset();
+      this.client = response;
+      this.title = 'Edición';
       responseMessage = 'Usuario registrado correctamente';
     } else if (response.state != null && response.state == false) {
       responseMessage = response.message;

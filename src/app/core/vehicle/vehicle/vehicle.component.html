@@ -15,16 +15,16 @@
         </div>
         <div class="col s12 m12">
           <p [class.text-danger]="notSelected">Por favor elige la ciudad</p>
-          <mat-form-field>            
-            <mat-select name="city"  [(value)]="clientVehicleDTO.vehicle.city">
-              <mat-option *ngFor="let city of arrCity" value="{{city.id}}">{{city.name}}</mat-option>
+          <mat-form-field>
+            <mat-select name="city"  [(ngModel)]="clientVehicleDTO.vehicle.city.id" (selectionChange)="changeCity($event)">
+              <mat-option *ngFor="let city of arrCity" [value]="city.id">{{city.name}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <div class="col s12 m12">
           <p [class.text-danger]="notSelected">Por favor elige la marca</p>
           <mat-form-field>
-            <mat-select name="brand" [(value)]="clientVehicleDTO.vehicle.brand" [(ngModel)]="clientVehicleDTO.vehicle.brand">
+            <mat-select name="brand" [(ngModel)]="clientVehicleDTO.vehicle.brand.id" (selectionChange)="changeBrand($event)">
               <mat-option *ngFor="let brand of arrBrand" [value]="brand.id">{{brand.name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -32,7 +32,7 @@
         <div class="col s12 m12">
           <p [class.text-danger]="notSelected">Por favor elige el tipo de vehículo</p>
           <mat-form-field>
-            <mat-select name="kind" [(value)]="clientVehicleDTO.vehicle.kind" [(ngModel)]="clientVehicleDTO.vehicle.kind">
+            <mat-select name="kind"  [(ngModel)]="clientVehicleDTO.vehicle.kind.id" (selectionChange)="changeKind($event)">
               <mat-option *ngFor="let kind of arrKind" [value]="kind.id">{{kind.name}}</mat-option>
             </mat-select>
           </mat-form-field>

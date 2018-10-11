@@ -186,8 +186,7 @@ export class VehicleListComponent implements OnInit {
    * @param vehicle elemento tipo tabla de datos
    */
   selectVehicle(vehicle) {
-    this.client = true;
-    this.addVehicleToggle = true;
+
     const indexOfVehicle = this.arrVehicleDTO.findIndex(x => x.id === vehicle.col1);
     if (indexOfVehicle >= 0) {
       const vehicleDTO = new VehicleDTO();
@@ -198,10 +197,8 @@ export class VehicleListComponent implements OnInit {
       vehicleDTO.enrollment = tempData.enrollment;
       vehicleDTO.kind = tempData.kind;
       this.vehicleId = vehicleDTO;
-      /* vehicleDTO.id = tempData.id;
-      vehicleDTO.id = this.arrVehicleDTO[indexOfVehicle].id; */
-
-
+      this.client = true;
+      this.addVehicleToggle = true;
     }
   }
 
@@ -210,7 +207,8 @@ export class VehicleListComponent implements OnInit {
    * @param $event boolean 
    */
   isUpdated($event) {
-
+    this.reset();
+    this.addVehicleToggle = false;
   }
 
   /**

@@ -33,7 +33,6 @@
         <!-- <a mat-raised-button  #upload (click)="file.click()">Elegír documento escaneado</a> -->
       </div>
       <div class="col s12 m6" *ngIf="client.id">
-        estados:::::
         <mat-form-field *ngIf="client.state">
           <mat-select name="state" placeholder="Estado" [(value)]="client.state.id">
             <mat-option *ngFor="let state of states" value="state.id">{{state.name}}</mat-option>
