@@ -58,12 +58,13 @@ export class VehicleListComponent implements OnInit {
   reset() {
     console.log(this.clientId);
     const regNumber = /\d/;
+    let path_ = '';
     if (regNumber.test(this.path) && this.clientId == null) {
-      this.path = `vehicle?brand=${this.path}`;
+      path_ = `vehicle?brand=${this.path}`;
     } else {
-      this.path = 'vehicle';
+      path_ = 'vehicle';
     }
-    this.getVehicles();
+    this.getVehicles(path_);
     const str = this.appService.doGetApiUrl();
     this.apibase = str.substring(0, str.length - 1);
   }
@@ -125,8 +126,8 @@ export class VehicleListComponent implements OnInit {
    * método que se encarga de consultar los datos del backend
    * @param cb callback que ejecutará filtros adicionales sobre los registros obtenidos
    */
-  getVehicles(cb = null) {
-    const url = (this.clientId != null) ? 'clientVehicle?client=' + this.clientId.id : this.path;
+  getVehicles(path, cb = null) {
+    const url = (this.clientId != null) ? 'clientVehicle?client=' + this.clientId.id : path;
     this.appService
       .doGet(url)
       .then((r: any) => {
