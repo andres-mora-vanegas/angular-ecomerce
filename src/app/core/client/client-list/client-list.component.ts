@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { AppService } from '../../../app.service';
 import { ClientModel } from '../client.model';
-import { FilterDto } from '../../product/filter.dto';
 
 @Component({
   selector: 'app-client-list',
@@ -18,10 +17,7 @@ export class ClientListComponent implements OnInit {
   subLevelId: number;
   @Input()
   categoryId: number;
-
-  @Input()
-  filterDTO: FilterDto;
-
+  
   @Output()
   productDTO = new EventEmitter<any>();
 

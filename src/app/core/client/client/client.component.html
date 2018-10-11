@@ -29,13 +29,14 @@
         <!-- <mat-form-field>
           <input matInput name="docuento" placeholder="Documento" [(ngModel)]="client.scanned_identification">
         </mat-form-field> -->
-        <input style="display:none" #file type="file" accept="image/*" (change)="upload($event)">
-        <a mat-raised-button  #upload (click)="file.click()">Elegír documento escaneado</a>
+        <input #file type="file" accept="image/*" (change)="upload($event)">
+        <!-- <a mat-raised-button  #upload (click)="file.click()">Elegír documento escaneado</a> -->
       </div>
       <div class="col s12 m6" *ngIf="client.id">
+        estados:::::
         <mat-form-field *ngIf="client.state">
           <mat-select name="state" placeholder="Estado" [(value)]="client.state.id">
-            <mat-option *ngFor="let state of states" [value]="state.id">{{state.name}}</mat-option>
+            <mat-option *ngFor="let state of states" value="state.id">{{state.name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -54,6 +55,6 @@
     </form>
   </mat-card>
   <app-vehicle-list *ngIf="client.id && vehicleList" [clientId]="client"></app-vehicle-list>
-  <app-vehicle-user-add *ngIf="client.id && addVehicleToggle" [clientId]="client" [modal]="addVehicleToggle"
-    (closeModal)="closeModal()" (created)="isCreated($event)"></app-vehicle-user-add>
+  <app-vehicle *ngIf="client.id && addVehicleToggle" [clientId]="client" [modal]="addVehicleToggle"
+    (closeModal)="closeModal()" (created)="isCreated($event)"></app-vehicle>
 </div>

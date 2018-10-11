@@ -1,12 +1,12 @@
 import { ClientModel } from './../../client/client.model';
 import { Component, OnInit, Input, Output, ViewChild, SimpleChanges, EventEmitter } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { FilterDto } from '../../product/filter.dto';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import * as moment from 'moment';
 
 import { AppService } from '../../../app.service';
 import { VehicleDTO } from '../vehicle-dto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -30,15 +30,36 @@ export class VehicleListComponent implements OnInit {
   @ViewChild(MatSort)
   sort: MatSort;
   arrayData: Array<any>;
+  arrVehicleDTO: Array<any>;
+  path: any;
+
+  addVehicleToggle: boolean;
+  client: boolean;
+  vehicleId: VehicleDTO;
 
   constructor(
     private appService: AppService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
-
+    this.route.params.forEach(params => {
+      this.path = params['id'];
+      this.reset();
+    });
   }
 
   ngOnInit() {
-    // Assign the data to the data source for the table to render
+    // Assign the data to the data source for the table to render   
+  }
+
+
+  reset() {
+    const regNumber = /\d/;
+    if (regNumber.test(this.path)) {
+      this.path = `vehicle?brand=${this.path}`;
+    } else {
+      this.path = 'vehicle';
+    }
     this.getVehicles();
   }
 
@@ -58,6 +79,7 @@ export class VehicleListComponent implements OnInit {
       const localData = [];
       if (data.length > 0) {
         this.arrayData = [];
+        this.arrVehicleDTO = data;
         data.forEach((element: any) => {
           let element_ = element;
           if (element_.id != null) {
@@ -99,10 +121,7 @@ export class VehicleListComponent implements OnInit {
    * @param cb callback que ejecutará filtros adicionales sobre los registros obtenidos
    */
   getVehicles(cb = null) {
-    let url = 'vehicles';
-    if (this.clientId != null) {
-      url = 'clientVehicle?client=' + this.clientId.id;
-    }
+    const url = (this.clientId != null) ? 'clientVehicle?client=' + this.clientId.id : this.path;
     this.appService
       .doGet(url)
       .then((r: any) => {
@@ -160,6 +179,46 @@ export class VehicleListComponent implements OnInit {
     const DATE = moment().format('YYYY_MM_DD_hmmss');
     const fileName = 'vehículos_' + DATE;
     new Angular5Csv(obj, fileName, options);
+  }
+
+  /**
+   * método que maneja la lógica para abrir el modal 
+   * @param vehicle elemento tipo tabla de datos
+   */
+  selectVehicle(vehicle) {
+    this.client = true;
+    this.addVehicleToggle = true;
+    const indexOfVehicle = this.arrVehicleDTO.findIndex(x => x.id === vehicle.col1);
+    if (indexOfVehicle >= 0) {
+      const vehicleDTO = new VehicleDTO();
+      const tempData = this.arrVehicleDTO[indexOfVehicle];
+      vehicleDTO.id = tempData.id;
+      vehicleDTO.city = tempData.city;
+      vehicleDTO.brand = tempData.brand;
+      vehicleDTO.enrollment = tempData.enrollment;
+      vehicleDTO.kind = tempData.kind;
+      this.vehicleId = vehicleDTO;
+      /* vehicleDTO.id = tempData.id;
+      vehicleDTO.id = this.arrVehicleDTO[indexOfVehicle].id; */
+
+
+    }
+  }
+
+  /**
+   * método que determina si se actualizó el vehículo
+   * @param $event boolean 
+   */
+  isUpdated($event) {
+
+  }
+
+  /**
+   * método que valida si el modal se abre o se cierra
+   * @param $event boolean
+   */
+  closeModal($event) {
+    this.addVehicleToggle = $event;
   }
 
 

@@ -80,7 +80,8 @@ export class ClientComponent implements OnInit {
   }
 
   upload($event) {
-    this.uploadFile = <File>$event.target.files[0];
+    // this.uploadFile = <File>$event.target.files[0];
+    // this.uploadFile = $event.target.files[0];
   }
 
   /**

@@ -1,3 +1,4 @@
+import { BrandComponent } from './../core/brand/brand/brand.component';
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -12,8 +13,8 @@ const appRoutes: Routes = [
   { path: "find/", component: SearchComponent },
   { path: "client/:id", component: ClientComponent },
   { path: "client-list", component: ClientListComponent },
-  { path: "vehicle-brand", component: VehicleListComponent },
-  { path: "vehicle", component: VehicleListComponent },
+  { path: "vehicle/:id", component: VehicleListComponent },
+  { path: "brand", component: BrandComponent },
   { path: "**", component: HomeComponent }
 ];
 

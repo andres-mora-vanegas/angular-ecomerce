@@ -12,7 +12,8 @@ export class AppService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar
   ) {
-    this.BASE = 'http://localhost:50000/';
+     this.BASE = 'http://192.168.0.6:8000/';
+    // this.BASE = 'https://djapp-cart.herokuapp.com/';
     this.GENERAL_MESSAGE = 'Se presentó un error inesperado ';
   }
 

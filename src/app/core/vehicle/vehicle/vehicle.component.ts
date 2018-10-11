@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { ClientModel } from './../../client/client.model';
 import { ClientVehicleDTO } from './../client-vehicle-dto';
 import { BrandModel } from './../../brand/brand.model';
@@ -9,26 +10,33 @@ import { VehicleDTO } from '../vehicle-dto';
 import { GeneralResponseDTO } from '../../../shared/generarResponse/general-response-dto';
 
 @Component({
-  selector: 'app-vehicle-user-add',
-  templateUrl: './vehicle-user-add.component.html',
-  styleUrls: ['./vehicle-user-add.component.css']
+  selector: 'app-vehicle',
+  templateUrl: './vehicle.component.html',
+  styleUrls: ['./vehicle.component.css']
 })
-export class VehicleUserAddComponent implements OnInit {
+export class VehicleComponent implements OnInit {
 
   arrCity: Array<CityModel>;
   arrBrand: Array<BrandModel>;
   arrKind: Array<KindModel>;
+  citySelected: any;
+  brandSelected: any;
+  kindSelected: any;
   clientVehicleDTO: ClientVehicleDTO;
   ENROLLMENT_REQUIRED: string;
   BRAND_REQUIRED: string;
   CITY_REQUIRED: string;
   KIND_REQUIRED: string;
+  selected = 'option3'
 
   @Input()
   modal: boolean;
 
   @Input()
   clientId: ClientModel;
+
+  @Input()
+  vehicleId: VehicleDTO;
 
   @Output()
   closeModal = new EventEmitter<any>();
@@ -59,6 +67,7 @@ export class VehicleUserAddComponent implements OnInit {
     this.getCitys();
     this.getBrands();
     this.getKinds();
+    //this.validVehicleCall();
   }
 
   /**
@@ -67,7 +76,7 @@ export class VehicleUserAddComponent implements OnInit {
   getCitys() {
     const url = 'city';
     this.appService.doGet(url)
-      .then((r: any) => {
+      .then((r: Array<CityModel>) => {
         this.arrCity = r;
       })
       .catch(error => this.appService.doCatch(error));
@@ -79,7 +88,7 @@ export class VehicleUserAddComponent implements OnInit {
   getBrands() {
     const url = 'brand';
     this.appService.doGet(url)
-      .then((r: any) => {
+      .then((r: Array<BrandModel>) => {
         this.arrBrand = r;
       })
       .catch(error => this.appService.doCatch(error));
@@ -91,7 +100,7 @@ export class VehicleUserAddComponent implements OnInit {
   getKinds() {
     const url = 'kind';
     this.appService.doGet(url)
-      .then((r: any) => {
+      .then((r: Array<KindModel>) => {
         this.arrKind = r;
       })
       .catch(error => this.appService.doCatch(error));
@@ -114,6 +123,7 @@ export class VehicleUserAddComponent implements OnInit {
   validMinimumData() {
     try {
       let errors = 0;
+      console.log(this.clientVehicleDTO);
       if (this.clientVehicleDTO.vehicle.enrollment == null) {
         this.appService.snack('No se ha registrado toda la información');
         errors++;
@@ -140,7 +150,8 @@ export class VehicleUserAddComponent implements OnInit {
   }
 
   addClientVehicle() {
-    const url = 'manageVehicleEnroll/valid';
+    const url = (this.vehicleId == null) ? 'manageVehicle/enroll' : 'vehicle/';
+    console.log(this.clientVehicleDTO);
     this.appService
       .doPost(url, this.clientVehicleDTO)
       .then((r: GeneralResponseDTO) => {
@@ -155,6 +166,16 @@ export class VehicleUserAddComponent implements OnInit {
         this.created.emit(true);
       }
       this.appService.snack(response.message);
+    } catch (error) {
+      this.appService.doCatch(error);
+    }
+  }
+
+  validVehicleCall() {
+    try {
+      if (this.vehicleId != null) {
+        this.clientVehicleDTO.vehicle = this.vehicleId;
+      }
     } catch (error) {
       this.appService.doCatch(error);
     }

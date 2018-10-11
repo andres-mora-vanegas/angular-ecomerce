@@ -38,7 +38,7 @@
               aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</a>
             <a href="#" *ngIf="subLevelId==null && categoryId==null" (click)="edit(row);false" matTooltip="Editar" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</a> -->
             <!-- <span *ngIf="!row.col6 && subLevelId!=null && categoryId!=null" matTooltip="El producto no está disponible" aria-label="Button that displays a tooltip when focused or hovered over">{{row.col2}}</span> -->
-            {{row.col2}}
+            <a href="#" (click)="selectVehicle(row);false">{{row.col2}}</a>
           </div>
         </mat-cell>
       </ng-container>
@@ -87,14 +87,19 @@
         </mat-cell>
       </ng-container>
 
-
-
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[25, 100]"></mat-paginator>
-    {{filterDTO|json}}
+    <mat-paginator [pageSizeOptions]="[25, 100]"></mat-paginator>    
   </div>
 </div>
 <div class="not-found" *ngIf="arrayData!=null && arrayData.length<1">
   <h2>No se encontró ningún resultado</h2>
   <img src="./assets/img/not-found.jpg" alt="">
 </div>
+<app-vehicle 
+*ngIf="vehicleId && addVehicleToggle"
+[clientId]="client" 
+[modal]="addVehicleToggle"
+[vehicleId]="vehicleId"
+(closeModal)="closeModal($event)" 
+(created)="isUpdated($event)"
+></app-vehicle>

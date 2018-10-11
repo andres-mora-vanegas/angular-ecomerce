@@ -15,9 +15,9 @@
         </div>
         <div class="col s12 m12">
           <p [class.text-danger]="notSelected">Por favor elige la ciudad</p>
-          <mat-form-field>
-            <mat-select name="city" [(value)]="clientVehicleDTO.vehicle.city" [(ngModel)]="clientVehicleDTO.vehicle.city">
-              <mat-option *ngFor="let city of arrCity" [value]="city.id">{{city.name}}</mat-option>
+          <mat-form-field>            
+            <mat-select name="city"  [(value)]="clientVehicleDTO.vehicle.city">
+              <mat-option *ngFor="let city of arrCity" value="{{city.id}}">{{city.name}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -44,7 +44,7 @@
           <div class="col s6 m6 ">
             <button mat-raised-button (click)="saveChanges()" color="primary">Confirmar</button>
           </div>
-        </div>        
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

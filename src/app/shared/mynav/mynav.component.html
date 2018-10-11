@@ -11,8 +11,8 @@
       <a mat-list-item routerLink="/find">Inicio</a>
       <a mat-list-item routerLink="/client-list">Clientes</a>
       <!-- <a mat-list-item routerLink="/cart">Compra</a> -->
-      <a mat-list-item routerLink="/vehicle">Vehículos disponibles</a>
-      <a mat-list-item routerLink="/vehicle-brand">Vehículos por marca </a>
+      <a mat-list-item routerLink="/vehicle/all">Vehículos disponibles</a>
+      <a mat-list-item routerLink="/brand">Vehículos por marca </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -25,7 +25,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>ecomerce</span>
+      <span>Cart manager</span>
     </mat-toolbar>
     <div class="container">
       <router-outlet></router-outlet>
