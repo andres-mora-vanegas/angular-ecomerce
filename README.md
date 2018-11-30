@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## see the online versión
 
-[link](https://andyman1907.github.io/angular-ecomerce/ target="_blank")
+<a href="https://andyman1907.github.io/angular-ecomerce/" target="blank">demo</a>
 
 ## Development server
 
